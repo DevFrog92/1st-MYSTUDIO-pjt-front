@@ -6,8 +6,8 @@
       <input type="text" v-model="title">
     </div>
     <div>
-      <label for="movieTitle">Movie Title</label>
-      <input type="text" v-model="movieTitle" id="movieTitle">
+      <label for="movie_title">Movie Title</label>
+      <input type="text" v-model="movie_title" id="movie_title">
     </div>
     <div>
       <input type="file"
@@ -15,7 +15,6 @@
         accept="image/png, image/jpeg"
         ref="myfiles"
         >
-        <button @click="sendImage">Send Image</button>
     </div>
   <div>
     <label for="number">평점</label>
@@ -25,11 +24,7 @@
     <label for="content">내용</label>
     <input type="text" id="content" v-model="content">
   </div>
-  <div>
-    <label for="user">user</label>
-    <input type="text" id="user" v-model="user">
-  </div>
-      
+  <button @click="sendImage">Submit</button>
   </div>
 </template>
 
@@ -41,38 +36,49 @@ export default {
     return {
       files :null,
       title:'',
-      movieTitle:'',
+      movie_title:'',
       rank:0,
-      user:'Anonymous ',
       content:'',
+      like:0,
 
     }
   },
   methods:{
+     setToken(){
+      const token = localStorage.getItem('jwt')
+      const config = {
+        headers: {
+          Authorization:`JWT ${token}`,
+          'Content-Type': 'multipart/form-data',
+        }
+      }
+      return config
+    },
     sendImage(){
-      // console.log(event.target.data)
+      const config = this.setToken()
       this.files = this.$refs.myfiles.files
-      console.log(this.files[0])
       let info = new FormData()
-      info.append('files', this.files[0])
-      info.append('user',this.user)
       info.append('title',this.title)
-      info.append('content',this.content)
-      info.append('movieTitle',this.movieTitle)
+      info.append('movie_title',this.movie_title)
       info.append('rank',this.rank)
+      info.append('content',this.content)
+      info.append('like_users', this.like)
       if (this.files===null){
         info.append('files',[])
       }
-      let config = {
-        headers: {
-          'Content-Type': 'multipart/form-data', // Content-Type을 변경해야 파일이 전송됨
-          // 'Authorization': `token ${token}`
-          }
-      }
-      axios.post('http://127.0.0.1:8000/community/analyze_image/',info,config)
+      axios.post('http://127.0.0.1:8000/community/',info,config)
       .then(res=>{
         console.log(res.data)
+        const review = res.data
+        this.$router.push({name:'DetailReview',params: {review}})
       })
+    }
+  },
+  created(){
+    const token = localStorage.getItem('jwt')
+    if (!token){
+       alert('로그인한 회원만 접근할 수 있습니다.')
+      this.$router.push({name:'Home'})
     }
   }
 } 

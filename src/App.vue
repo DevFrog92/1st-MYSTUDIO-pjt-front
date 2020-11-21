@@ -1,26 +1,60 @@
 <template>
-
   <div id="app">
     <div id="nav">
-      <router-link to="/" >Home</router-link> |
-    <router-link to="/community">community</router-link> |
-    <router-link to="/CreateReview" >CreateReview</router-link>
+      <span v-if="login">
+        <router-link to="/movielist">MovieList</router-link> |
+        <router-link to="/community">Community</router-link> |
+        <router-link to="/map">LoadMap</router-link> |
+        <router-link @click.native="logout" to="#">Logout</router-link> |
+        <!-- <MovieList /> -->
+      </span>
+      <span v-else>
+        <router-link to="/home"></router-link>
+      </span>
+      <router-view @login='login=true'/>
     </div>
-    <router-view/>
   </div>
 </template>
 
 <script>
-
+import axios from 'axios'
+// import MovieList from '@/views/movie/MovieList'
+// import Home from '@/views/Home'
 export default {
   name: 'App',
-
   components: {
+    // MovieList,
+    // Home
   },
-
-  data: () => ({
-    //
-  }),
+  data(){
+    return {
+      login:this.$store.state.auth.loginstate
+    }
+  },
+  methods:{
+    logout(){
+      localStorage.removeItem('jwt')
+      this.login = !this.login
+      axios.post('http://127.0.0.1:8000/rest-auth/logout/')
+      .then(()=>{
+       this.$router.push({name:'Login'})
+      })
+    }
+  },
+  computed:{
+    loginstate (){
+      console.log(this.$store.state.loginState)
+      return this.$store.state.loginState
+    }
+  },
+  created(){
+    const token = localStorage.getItem('jwt')
+    if(token){
+      console.log('token state')
+      this.login=true
+    }
+    console.log(this.login)
+  }
 };
 </script>
 
