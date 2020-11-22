@@ -5,6 +5,7 @@
         <router-link to="/movielist">MovieList</router-link> |
         <router-link to="/community">Community</router-link> |
         <router-link to="/map">LoadMap</router-link> |
+        <router-link to="/profile">Profile</router-link> |
         <router-link @click.native="logout" to="#">Logout</router-link> |
         <!-- <MovieList /> -->
       </span>

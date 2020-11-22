@@ -8,6 +8,8 @@ import MovieDetail from '@/components/movies/MovieDetail'
 import Signup from '@/views/accounts/Signup'
 import Login from '@/views/accounts/Login'
 import LoadMap from '@/views/profile/LoadMap'
+import Profile from '@/views/profile/Profile'
+import UpdateProfile from '@/views/profile/UpdateProfile'
 import Home from '@/views/Home'
 // import App from '@/App'
 import MovieList from '@/views/movie/MovieList'
@@ -18,6 +20,11 @@ const routes = [
     path:'/map',
     name:'LoadMap',
     component:LoadMap
+  },
+  {
+    path:'/profile',
+    name:'Profile',
+    component:Profile
   },
   {
     path:'/community',
@@ -33,6 +40,12 @@ const routes = [
     path:'/moviedetail',
     name:'MovieDetail',
     component:MovieDetail,
+    props:true
+  },
+  {
+    path:'/updateprofile',
+    name:'UpdateProfile',
+    component:UpdateProfile,
     props:true
   },
   {
