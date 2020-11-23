@@ -14,15 +14,15 @@
       <label for="genre">드라마</label>
       <input type="checkbox" value="1" v-model="genres.drama">
       <label for="genre">액션</label>
-      <input type="checkbox" value="19" v-model="genres.actions">
+      <input type="checkbox" value="19" v-model="genres.action">
       <label for="genre">판타지</label>
       <input type="checkbox" value="2" v-model="genres.fantasy">
       <label for="genre">애니메이션</label>
       <input type="checkbox" value="15" v-model="genres.animation">
       <label for="genre">공포</label>
-      <input type="checkbox" value="4" v-model="genres.horo">
+      <input type="checkbox" value="4" v-model="genres.horror">
       <label for="genre">로멘스</label>
-      <input type="checkbox" value="5" v-model="genres.romanse">
+      <input type="checkbox" value="5" v-model="genres.romance">
     </div>
     <button @click="updateProfile(profile)">Send</button>
   </div>
@@ -43,11 +43,11 @@ export default {
         nickname: this.profile.nickname,
         genres :{
           drama : null,
-          actions:null,
+          action:null,
           fantasy:null,
           animation:null,
-          horo:null,
-          romanse:null
+          horror:null,
+          romance:null
         }
 
     }
