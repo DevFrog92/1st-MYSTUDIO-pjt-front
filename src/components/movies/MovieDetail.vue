@@ -1,15 +1,39 @@
 <template>
-  <div v-if="movie">
-    <h1>Movie Detail</h1>
-    <p>{{movie.title}}</p>
-    <img :src="movie.poster_path" alt="">
-    <p>{{movie.overview}}</p>
-    <p>{{movie.popularity}}</p>
-    <p>{{movie.release_date}}</p>
-    <p>{{movie.vote_average}}</p>
-    <iframe width="420" height="315" :src="video_url" frameborder="0" allowfullscreen></iframe>
-    <button @click="Back">Back</button>
-  </div>
+<div>
+  <b-container id='detail-container'  >
+    <b-row class="mb-5">
+    <b-embed
+     type="iframe"
+    aspect="16by9"
+    :src="video_url"
+    allowfullscreen>
+    </b-embed>  
+    </b-row>
+    <b-row>
+    <b-col class="p-0">
+    <b-card :img-src="movie.poster_path" img-alt="Card image" img-left class="mb-3">
+      <!-- <b-card-text> -->
+        <b-jumbotron class="bg-white">
+        <template #header ><h2 style="font-weight: bold;">{{movie.title}}</h2></template>
+        <p class="mt-5" style="font-size:20px;">{{movie.overview}}</p>
+
+
+        <hr class="my-4">
+
+        <p>Popularity : {{movie.popularity}}</p>
+        <p>Release Date : {{movie.release_date}}</p>
+        <p>Vote Average : {{movie.vote_average}}</p>
+
+        <b-button variant="primary" href="#" class="mr-5">Do Something</b-button>
+        <b-button variant="success" href="#">Do Something Else</b-button>
+      </b-jumbotron>
+      <!-- </b-card-text> -->
+    </b-card>
+    </b-col>    
+    </b-row>
+  </b-container>
+    <b-button style="font-size:30px; margin:5px" @click="Back">Back</b-button>
+</div>
 </template>
 
 <script>
@@ -19,6 +43,9 @@ export default {
   props:{
     movie:{
       type:Object
+    },
+    page:{
+      type:String
     }
   },
   data(){
@@ -31,7 +58,6 @@ export default {
       const key = 'e37c0ae71977e8ad20b5a3f6caa339a1'
       const movie_id = this.movie.id
       console.log(movie_id)
-      // https://api.themoviedb.org/3/movie/${movie_id}/videos?api_key=${key}&language=ko-KR
       axios.get(`https://api.themoviedb.org/3/movie/${movie_id}/videos?api_key=${key}&language=en-US`)
       .then(res=>{
         console.log(res.data.results[0].key)
@@ -40,7 +66,12 @@ export default {
       })
     },
     Back(){
-      this.$router.push({name:'MovieList'})
+      if(this.page === 'List'){
+        this.$router.push({name:'MovieList'})
+      }else{
+        this.$router.push({name:'MovieRecommaned'})
+      }
+
     }
   },
   created(){
@@ -56,6 +87,13 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
+#detail-container{
+  margin-top: 120px;
+  padding: 0;
+}
 
+#header{
+  font-size: 50px;
+}
 </style>

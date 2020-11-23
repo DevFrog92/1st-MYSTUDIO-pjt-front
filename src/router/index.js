@@ -32,11 +32,6 @@ const routes = [
     component:Community
   },
   {
-    path:'/community',
-    name:'Community',
-    component:Community
-  },
-  {
     path:'/movielist',
     name:'MovieList',
     component:MovieList

@@ -46,6 +46,7 @@ export default {
           }
           this.reviews.push(resItm)
         }
+        console.log(res.data)
       })
     },
     goToCreate () {

@@ -34,8 +34,9 @@ export default {
         console.log(res.data.user.username)
         localStorage.setItem('jwt',res.data.token)
         this.$emit('login')
-        this.$router.push({name:'App'})
+        this.$router.push({name:'MovieList'})
         this.$store.dispatch('login',res.data.user.username)
+        
       })
       .catch(err=>{
         console.log(err)

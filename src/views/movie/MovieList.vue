@@ -1,111 +1,67 @@
 <template>
-  <div>
-    <h1>MovieList</h1>
-    <button @click="getList">get list</button>
-    <hr>
-    <div v-for="movie in popular_movie_list" :key="movie.id">
-      <div @click="moveToDetail(movie)">
-      <p>{{movie.title}}</p>
-      <img :src="movie.poster_path" :alt="movie.title">
-      </div>
-    </div>
-    <!-- ################################ -->
-    <div>
-    <b-carousel
-      id="carousel-1"
-      v-model="slide"
-      :interval="4000"
-      controls
-      indicators
-      background="#ababab"
-      img-width="1024"
-      img-height="480"
-      style="text-shadow: 1px 1px 2px #333;"
-      @sliding-start="onSlideStart"
-      @sliding-end="onSlideEnd"
-    >
-      <!-- Text slides with image -->
-      <b-carousel-slide
-        caption="First slide"
-        text="Nulla vitae elit libero, a pharetra augue mollis interdum."
-        img-src="https://picsum.photos/1024/480/?image=52"
-      ></b-carousel-slide>
-
-      <!-- Slides with custom text -->
-      <b-carousel-slide img-src="https://picsum.photos/1024/480/?image=54">
-        <h1>Hello world!</h1>
-      </b-carousel-slide>
-
-      <!-- Slides with image only -->
-      <b-carousel-slide img-src="https://picsum.photos/1024/480/?image=58"></b-carousel-slide>
-
-      <!-- Slides with img slot -->
-      <!-- Note the classes .d-block and .img-fluid to prevent browser default image alignment -->
-      <b-carousel-slide>
-        <template #img>
-          <img
-            class="d-block img-fluid w-100"
-            width="1024"
-            height="480"
-            src="https://picsum.photos/1024/480/?image=55"
-            alt="image slot"
-          >
-        </template>
-      </b-carousel-slide>
-
-      <!-- Slide with blank fluid image to maintain slide aspect ratio -->
-      <b-carousel-slide caption="Blank Image" img-blank img-alt="Blank image">
-        <p>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse eros felis, tincidunt
-          a tincidunt eget, convallis vel est. Ut pellentesque ut lacus vel interdum.
-        </p>
-      </b-carousel-slide>
-    </b-carousel>
-
-    <p class="mt-4">
-      Slide #: {{ slide }}<br>
-      Sliding: {{ sliding }}
-    </p>
-  </div>
+  <div v-if="popular_movie_list.length" id='MovieList'>
+    <h1 id="head"><b-btn @click="current"><h3> Current Popular Movies </h3> </b-btn>|<b-btn @click="newly"><h3> Newly Created Movie </h3> </b-btn>|<b-btn @click="now"> <h3> Movies In Theatres</h3> </b-btn></h1>
+    <carousel-3d :startIndex='show_movie_list.length - 2' :display='7' :perspective='40' :width="400" :height="700" :space='500' :inverse-scaling="500" id='carousel' >
+      <slide v-for="(movie,i) in show_movie_list" :index='i' :key="i" id='slide'>
+        <div>
+          <img :src="movie.poster_path" :alt="movie.title" id='image'>
+          <b-btn id='btn' @click="onClick(movie)">{{movie.title}}</b-btn>
+        </div>
+      </slide>
+  </carousel-3d>
+  <hr>
   </div>
 </template>
 
 <script>
 import axios from 'axios'
-
+import { Carousel3d, Slide } from 'vue-carousel-3d'
 export default {
   name:'MovieList',
   data(){
     return {
+      show_movie_list:[],
       popular_movie_list:[],
       latest_movie_list:[],
-      imageUrl : 'https://image.tmdb.org/t/p/w500'
+      upcomming_movie_list:[],
+      imageUrl : 'https://image.tmdb.org/t/p/w500',
+      yet:false,
+      isToggle:false,
+      movie_detail : null
     }
   },
+  components: {
+    Carousel3d,
+    Slide,
+  },
   methods:{
+    current(){
+      console.log('누른다')
+      this.show_movie_list = this.popular_movie_list
+    },
+    newly(){
+      this.show_movie_list = this.latest_movie_list
+    },
+    now(){
+      console.log('누른다')
+
+      this.show_movie_list = this.upcomming_movie_list
+    },
+    onClick(movie){
+      console.log('이동')
+      this.$router.push({name:'MovieDetail',params:{movie:movie,page:'List'}})
+    },
     moveToDetail(movie){
       this.$router.push({name:'MovieDetail',params: {movie}})
     },
     getList(){
-      const d = new Date()
-      const dd = d.toLocaleDateString()
-      console.log(dd.slice(0,4))
-      console.log(dd.slice(6,8))
-      console.log(dd.slice(10,12))
-      console.log(`${dd.slice(0,4)}${dd.slice(6,8)}${dd.slice(10,12)}`)
-      // const key = 'd5df98dce7e875e3412570f19506940d'
       const key = 'e37c0ae71977e8ad20b5a3f6caa339a1'
       console.log(key)
-      // now = datetime.datetime.now()
-      // delta = datetime.timedelta(days=-1)
-      // yesterday = now + delta
-      // const yesterday_str = `${dd.slice(0,4)}0101`
-      
-      // http://www.kobis.or.kr/kobisopenapi/webservice/rest/boxoffice/searchDailyBoxOfficeList.json?key=${key}&targetDt=${yesterday_str}
       axios.get(`https://api.themoviedb.org/3/movie/popular?api_key=${key}&language=ko-KR`)
       .then(res=>{
         console.log('성공')
-        console.log(res.data.results)
+        this.yet = !this.yet
+        console.log(this.yet)
         for (const r of res.data.results){
           const resItm = {
             ...r,
@@ -119,13 +75,31 @@ export default {
       axios.get(`https://api.themoviedb.org/3/movie/now_playing?api_key=${key}&language=ko-KR&page=1`)
       .then(res=>{
         console.log('성공')
+        this.yet = !this.yet
         console.log(res.data.results)
-        this.latest_movie_list =res.data.results
+        for (const r of res.data.results){
+          const resItm = {
+            ...r,
+            poster_path : this.imageUrl + r.poster_path
+          }
+          this.latest_movie_list.push(resItm) 
+        }
+      })
+      axios.get(`https://api.themoviedb.org/3/movie/upcoming?api_key=${key}&language=ko-KR&page=1`)
+      .then(res=>{
+        console.log('성공')
+        this.yet = !this.yet
+        console.log(res.data.results)
+        for (const r of res.data.results){
+          const resItm = {
+            ...r,
+            poster_path : this.imageUrl + r.poster_path
+          }
+          this.upcomming_movie_list.push(resItm) 
+        }
       })
       
 
-      // result = requests.get(url=url,params=param)
-      // box_office_json_object = result.json()
 
     }
   },
@@ -133,7 +107,9 @@ export default {
     const token = localStorage.getItem('jwt')
     if (token){
       this.getList()
-      }else{
+      this.show_movie_list = this.popular_movie_list
+      }
+    else{
        alert('로그인한 회원만 접근할 수 있습니다.')
       this.$router.push({name:'Home'})
   }
@@ -142,5 +118,31 @@ export default {
 </script>
 
 <style>
+#head{
+  margin-top: 80px;
+}
 
+#carousel{
+  margin-top: 100px;
+}
+#slide{
+  background-color: white;
+  border: 1px solid white;
+}
+
+.item {
+  position: relative;
+}
+.des {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+#btn {
+  width:100%;
+  text-align: center;
+  margin: 7px 0px;
+  font-size: 23px;
+}
 </style>

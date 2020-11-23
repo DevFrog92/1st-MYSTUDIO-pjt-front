@@ -8,7 +8,9 @@ export default new Vuex.Store({
       username :'',
       loginState:false,
       genre : null,
-    }
+    },
+    recommand : [],
+    genre_name:[]
   },
   mutations: {
     LOGIN(state,username){
@@ -20,7 +22,20 @@ export default new Vuex.Store({
     UPDATE_GENRE(state,genre){
       state.auth.genre = genre
       console.log('변환한다',state.auth.genre)
-
+    },
+    ADD_LIST(state,list){
+      state.recommand = list
+      console.log(state.recommand)
+    },
+    ADD_NAME(state,name){
+      state.genre_name = name
+      console.log(state.genre_name)
+    },
+    REMOVE_LIST(state,list){
+      state.recommand = list
+    },
+    REMOVE_NAME(state,name){
+      state.genre_name = name
     }
   },
   actions: {
@@ -30,6 +45,18 @@ export default new Vuex.Store({
     },
     updategenre({commit},genre){   
       commit('UPDATE_GENRE',genre)   
+    },
+    addList({commit},list){
+      commit('ADD_LIST',list)
+    },
+    addName({commit},name){
+      commit('ADD_NAME',name)
+    },
+    removeList({commit},list){
+      commit('REMOVE_LIST',list)
+    },
+    removeName({commit},name){
+      commit('REMOVE_NAME',name)
     }
   },
 })
