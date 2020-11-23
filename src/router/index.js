@@ -11,8 +11,8 @@ import LoadMap from '@/views/profile/LoadMap'
 import Profile from '@/views/profile/Profile'
 import UpdateProfile from '@/views/profile/UpdateProfile'
 import Home from '@/views/Home'
-// import App from '@/App'
 import MovieList from '@/views/movie/MovieList'
+import MovieRecommaned from '@/components/movies/MovieRecommaned'
 Vue.use(VueRouter)
 
 const routes = [
@@ -40,6 +40,12 @@ const routes = [
     path:'/moviedetail',
     name:'MovieDetail',
     component:MovieDetail,
+    props:true
+  },
+  {
+    path:'/movierecommaned',
+    name:'MovieRecommaned',
+    component:MovieRecommaned,
     props:true
   },
   {

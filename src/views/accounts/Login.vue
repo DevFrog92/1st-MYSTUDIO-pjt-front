@@ -28,9 +28,8 @@ export default {
   },
   methods:{
     login({username,password}){
-
       axios.post('http://127.0.0.1:8000/rest-auth/login/',{username,password})
-      .then(res=>{
+      .then(res=>{ 
         console.log(res.data)
         console.log(res.data.user.username)
         localStorage.setItem('jwt',res.data.token)
@@ -41,7 +40,9 @@ export default {
       .catch(err=>{
         console.log(err)
       })
-    }
+    },
+    
+    
   }
 }
 </script>
