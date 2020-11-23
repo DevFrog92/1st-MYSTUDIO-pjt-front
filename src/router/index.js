@@ -37,6 +37,11 @@ const routes = [
     component:Community
   },
   {
+    path:'/movielist',
+    name:'MovieList',
+    component:MovieList
+  },
+  {
     path:'/moviedetail',
     name:'MovieDetail',
     component:MovieDetail,
@@ -53,11 +58,6 @@ const routes = [
     name:'UpdateProfile',
     component:UpdateProfile,
     props:true
-  },
-  {
-    path:'/movielist',
-    name:'MovieList',
-    component:MovieList
   },
   {
     path:'/createreview',

@@ -8,12 +8,21 @@
         <router-link to="/profile">Profile</router-link> |
         <router-link to="/movierecommaned">MovieRecommaned</router-link> |
         <router-link @click.native="logout" to="#">Logout</router-link> |
-        <!-- <MovieList /> -->
+       <b-nav-item-dropdown text="Lang" right>
+          <b-dropdown-item to="/movielist">MovieList</b-dropdown-item>
+          <b-dropdown-item to="/community">Community</b-dropdown-item>
+          <b-dropdown-item to="/map">LoadMap</b-dropdown-item>
+          <b-dropdown-item to="/profile">Profile</b-dropdown-item>
+          <b-dropdown-item to="/movierecommaned">MovieRecommaned</b-dropdown-item>
+          <b-dropdown-item @click.native="logout" to="#">Logout</b-dropdown-item>
+        </b-nav-item-dropdown>
       </span>
       <span v-else>
         <router-link to="/home"></router-link>
       </span>
+      <div class="container">
       <router-view @login='login=true'/>
+      </div>
     </div>
   </div>
 </template>
