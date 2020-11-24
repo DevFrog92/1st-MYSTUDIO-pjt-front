@@ -1,29 +1,8 @@
 <template>
   <div>
-    <p>CreateReview</p>
-  <div id='body'>
-    <div>
-      <label for="movie_title">Movie Title</label>
-      <input type="text" v-model="movie_title" id="movie_title">
-    </div>
-  <div>
-    <label for="number">평점</label>
-    <input type="number" id="number" min="1" max="5" v-model="rank">
-  </div>
-  <div>
-    <label for="content">한줄평</label>
-    <input type="text" id="content" v-model="content">
-  </div>
-  <div>
-    <label for="content">포스터 경로</label>
-    <input type="text" id="content" v-model="poster">
-  </div>
-  <div>
-    <label for="content">영화 아이디</label>
-    <input type="text" id="content" v-model="movie_id">
-  </div>
-    <b-button class="mt-3" v-b-toggle.sidebar-right>영화 찾기</b-button>
-    <b-sidebar id="sidebar-right" title="" right shadow width="500px"  backdrop>
+  <div id='body_CR'>
+      <b-button v-b-toggle.sidebar-right>Search Movie</b-button>
+    <b-sidebar id="sidebar-right" title="" right shadow width="25rem"  backdrop>
       <div class="px-3 py-2">
         <h2 style="font-weight:bold; margin-bottom:2rem;">Movie search</h2>
         <input type="input" class="form__field" placeholder="Name" name="name" id='name'  @keypress.enter="findMovie(movie_title_search)" required v-model="movie_title_search"/>
@@ -54,7 +33,33 @@
         </div>
       </div>
     </b-sidebar>
-  <b-button style="margin-top:30px;" @click="sendImage">Submit</b-button>
+
+    <div class="form__group field">
+      <input type="text" class="form__field" v-model="content" placeholder="content" name="content" id='content' required />
+      <label for="content" class="form__label">한줄평</label>
+    </div>
+    <div class="form__group field">
+      <input type="text" class="form__field" v-model="movie_title" placeholder="movie_title" name="movie_title" id='movie_title' required />
+      <label for="movie_title" class="form__label">movie_title</label>
+    </div>
+    <div class="form__group field">
+      <input type="text" class="form__field" v-model="poster" placeholder="poster" name="content" id='content' required />
+      <label for="content" class="form__label">포스터 경로</label>
+    </div>
+
+    <div class="form__group field" >
+      <input type="number" class="form__field" v-model="rank" min="1" max="5" placeholder="number" name="number" id='number' required />
+      <label for="number" class="form__label">평점</label>
+    </div>
+
+    <div class="form__group field">
+      <input type="text" class="form__field" v-model="movie_id" placeholder="movie_id" name="content" id='content' required />
+      <label for="content" class="form__label">영화 아이디</label>
+    </div>
+
+  
+  <!-- <b-button style="margin-top:30px;" @click="sendImage">Submit</b-button> -->
+  <span id="a" style="text-decoration:none; color:white; width:100px; margin-top:4rem;" @click="sendImage" class="btn6">  Submit  </span>
   </div>
   </div>
 </template>
@@ -132,12 +137,12 @@ export default {
 } 
 </script>
 
-<style scoped>
+<style >
 .form__group {
     position: relative;
     padding: 15px 0 0;
     margin-top: 10px;
-    width: 100%;
+    width: 50%;
 }
 
 .form__field {
@@ -146,8 +151,8 @@ export default {
     border: 0;
     border-bottom: 2px solid #9b9b9b;
     outline: 0;
-    font-size: 1.6rem;
-    color:black;
+    font-size: 1.3rem;
+    color:white;
     padding: 7px 0;
     background: transparent;
     transition: border-color 0.2s;
@@ -168,15 +173,16 @@ export default {
     top: 0;
     display: block;
     transition: 0.2s;
-    font-size: 2rem;
+    font-size: 1rem;
     color: #9b9b9b;
+
 }
 
 .form__field:focus {
     padding-bottom: 6px;
     font-weight: 700;
     border-width: 3px;
-    border-image: linear-gradient(to right, #11998e, #38ef7d);
+    border-image: linear-gradient(to right,#6A16CD, #5411A4, #be29ec,     #c616cd);
     border-image-slice: 1;
 }
 
@@ -186,25 +192,45 @@ export default {
     display: block;
     transition: 0.2s;
     font-size: 1rem;
-    color: #11998e;
+    color:#6A16CD;
     font-weight: 700;
 }
 
-/* reset input */
 .form__field:required, .form__field:invalid {
     box-shadow: none;
+
 }
 
-/* demo */
-#body {
+#body_CR {
     font-family: 'Poppins', sans-serif;
     display: flex;
     flex-direction: column;
     /* justify-content: center; */
+    padding: 9rem;
     align-items: center;
     min-height: 100vh;
     font-size: 1.5rem;
-    margin-top: 100px ;
-    background-color:white;
+    background-color:black;
+}
+
+
+
+.btn6, .btn6:link, .btn6:visited {
+    padding: 13px 0;
+    border: 1px solid #6A16CD;
+    color: #6A16CD;
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 12px;
+    letter-spacing: 2px;
+    transition: all .2s ease-in-out;
+}
+
+.btn6:hover, .btn6:link:hover, .btn6:visited:hover {
+    background: linear-gradient(100deg,#6A16CD,#c616cd);
+    border: 1px solid #6A16CD;
+    color: #fefefe;
+    border-radius: 30px;
 }
 </style>
+

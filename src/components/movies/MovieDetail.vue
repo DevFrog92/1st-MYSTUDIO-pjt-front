@@ -1,38 +1,48 @@
-<template>
-<div>
-  <b-container id='detail-container'  >
-    <b-row class="mb-5">
+<template >
+<div style="background-color:black;">
+  <b-container id='detail-container' fluid style="width:50%" >
+  <b-row class="mb-3">
+  <b-col cols="10" class="p-0">
+
     <b-embed
      type="iframe"
     aspect="16by9"
     :src="video_url"
     allowfullscreen>
     </b-embed>  
+  </b-col>
+  <b-col cols="2">
+
+  <div class="outer m-0">
+    <div class="inner ">
+      <label @click="Back" class="label_2">Back</label>
+    </div>
+  </div>
+  </b-col>
     </b-row>
+
     <b-row>
     <b-col class="p-0">
-    <b-card :img-src="movie.poster_path" img-alt="Card image" img-left class="mb-3">
-      <!-- <b-card-text> -->
-        <b-jumbotron class="bg-white">
-        <template #header ><h2 style="font-weight: bold;">{{movie.title}}</h2></template>
-        <p class="mt-5" style="font-size:20px;">{{movie.overview}}</p>
+    <b-card :img-src="movie.poster_path" img-alt="Card image" img-width="40%" img-height="" img-left style="border:4px double #6A16CD; background-color:black;" >
+      <b-card-text style="height:100px; ">
+        <b-jumbotron class="pt-0" style="background-color:black;width:100%;height:100%;">
+        <h2 style="font-weight: bold; font-size:1.5rem; color:white;">{{movie.title}}</h2>
+        <p class="mt-3" style="font-size:0.8rem; color:white;">{{movie.overview}}</p>
+        <p class='mb-0'>Popularity : {{movie.popularity}}</p>
+        <p class='mb-0'>Release Date : {{movie.release_date}}</p>
+        <p class='mb-0'>Vote Average : {{movie.vote_average}}</p>
 
-
-        <hr class="my-4">
-
-        <p>Popularity : {{movie.popularity}}</p>
-        <p>Release Date : {{movie.release_date}}</p>
-        <p>Vote Average : {{movie.vote_average}}</p>
-
-        <b-button variant="primary" href="#" class="mr-5">Do Something</b-button>
+        <hr class="my-1 ">
+        <div class="d-flex justify-content-between mt-3">
+        <b-button variant="primary" href="#">Do Something</b-button>
         <b-button variant="success" href="#">Do Something Else</b-button>
+        </div>
       </b-jumbotron>
-      <!-- </b-card-text> -->
+      </b-card-text>
     </b-card>
     </b-col>    
     </b-row>
   </b-container>
-    <b-button style="font-size:30px; margin:5px" @click="Back">Back</b-button>
 </div>
 </template>
 
@@ -88,12 +98,78 @@ export default {
 </script>
 
 <style scoped>
+@import url('https://fonts.googleapis.com/css?family=Noto+Sans:400,400i,700,700i&subset=greek-ext');
+
 #detail-container{
-  margin-top: 120px;
-  padding: 0;
+  padding-top: 60px;
+  padding-bottom: 100px;
 }
 
-#header{
-  font-size: 50px;
+
+.outer {
+  position: relative;
+  /* float:right;
+  margin: 0px 15px; */
+  width: 70px;
+  margin-top: 100px;
+  cursor: pointer;
+}
+
+.inner {
+  width: inherit;
+  text-align: center;
+
+}
+
+.label_2 { 
+  font-size: 15px; 
+  font-weight: bold;
+  line-height: 4em;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  font-family: 'Noto Sans', sans-serif;
+  color: #6A16CD;
+  transition: all .3s ease-in;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.inner:before, .inner:after {
+  position: absolute;
+  content: '';
+  height: 2px;
+  width: inherit;
+  background: radial-gradient(#c616cd ,#6A16CD, #be29ec,#5411A4	);
+  left: 0;
+  transition: all .2s ease-in;
+}
+
+.inner:before {
+  top: 50%; 
+  transform: rotate(45deg);  
+}
+
+.inner:after {  
+  bottom: 50%;
+  transform: rotate(-45deg);  
+}
+
+.outer:hover label {
+  opacity: 1;
+}
+
+.outer:hover .inner:before,
+.outer:hover .inner:after {
+  transform: rotate(0);
+}
+
+.outer:hover .inner:before {
+  top: 0;
+
+}
+
+.outer:hover .inner:after {
+  bottom: 0;
+  
 }
 </style>

@@ -1,56 +1,23 @@
 <template>
   <div id="app" >
-    <!-- <b-navbar toggleable type="dark" variant="#636e72" id="nav"> -->
-    <b-navbar toggleable type="dark" style="background-color:#2d3436;" id="nav">
-        <b-navbar-brand href="#" to='/movielist' id="nav-head">MY STUDIO</b-navbar-brand>
-
-        <b-navbar-toggle target="navbar-toggle-collapse">
-          <template #default="{ expanded }">
-            <b-icon v-if="expanded" icon="chevron-bar-up"></b-icon>
-            <b-icon v-else icon="chevron-bar-down"></b-icon>
-          </template>
-        </b-navbar-toggle>
-
-        <b-collapse id="navbar-toggle-collapse" is-nav>
-          <b-navbar-nav class="ml-auto container">
+    <div v-if="login">
+      <b-navbar toggleable type="dark" style="background-color:black;" id="nav" >
+        <b-navbar-brand href="#" to='/movielist' id="nav-head" ><img src="http://127.0.0.1:8000/api/logo/logo.png" alt="logo" style="float:left;" width="20%"></b-navbar-brand>
+          <b-navbar-nav class="ml-auto mr-4">
           <span v-if="login">
-          <b-row>
-            <b-col cols='4'>
-            <b-nav-item to="/movielist">MovieList</b-nav-item>
-            </b-col>
-            <b-col cols='4'>
-            <b-nav-item to="/community">Community</b-nav-item>
-            </b-col>
-            <b-col cols='4'>
-            <b-nav-item to="/test">Test</b-nav-item>
-            </b-col>
-            <b-col cols='4'>
-            <b-nav-item to="/test2">Test2</b-nav-item>
-            </b-col>
-            <b-col cols='4'>
-            <b-nav-item to="/profile">Profile</b-nav-item>
-            </b-col>
-            <b-col cols='4'>
-            <b-nav-item to="/map">RoadMap</b-nav-item>
-            </b-col>
-            <b-col cols='4'>
-            <b-nav-item to="/movierecommaned">MovieRecommaned</b-nav-item>
-            </b-col>
-            <b-col cols='4'>
-            <b-nav-item @click="logout">logout</b-nav-item>
-            </b-col>
+          <b-row >
+            <b-nav-item style="margin:0 2px;" to="/map">RoadMap</b-nav-item>
+            <b-nav-item style="margin:0 2px;" to="/movierecommaned">MovieRecommaned</b-nav-item>
+            <b-nav-item style="margin:0 5px;" to="/movielist">MovieList</b-nav-item>
+            <b-nav-item style="margin:0 5px;" to="/community">Community</b-nav-item>
+            <b-nav-item style="margin:0 5px;" to="/profile">Profile</b-nav-item>
+            <b-nav-item style="margin:0 5px;" @click="logout">logout</b-nav-item>
           </b-row>
         </span>
-        <span v-else>
-            <b-row>
-            <b-nav-item to="/signup">Signup</b-nav-item>
-            </b-row>
-      </span>
           </b-navbar-nav>
-      </b-collapse>
   </b-navbar>
-      <router-view @login='login=true'/>
-        
+      </div>      
+      <router-view @login='login=true'/>  
   </div>
 </template>
 
@@ -105,9 +72,6 @@ export default {
   color: #2c3e50;
 }
 
-#nav {
-  padding: 30px;
-}
 
 #nav-head {
   font-weight: bold;

@@ -1,8 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Community from '@/views/community/Community'
-import Test from '@/views/community/Test'
-import Test2 from '@/views/community/Test2'
 import CreateReview from '@/components/community/CreateReview'
 import DetailReview from '@/components/community/DetailReview'
 import UpdateReview from '@/components/community/UpdateReview'
@@ -22,16 +20,6 @@ const routes = [
     path:'/profile',
     name:'Profile',
     component:Profile
-  },
-  {
-    path:'/test2',
-    name:'Test2',
-    component:Test2
-  },
-  {
-    path:'/test',
-    name:'Test',
-    component:Test
   },
   {
     path:'/map',
