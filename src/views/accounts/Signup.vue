@@ -37,6 +37,11 @@ export default {
         .then(()=>{
           this.$router.push({name:'Login'})
         })
+        .catch(()=>{
+          alert('존재하는 계정입니다.')
+          this.$router.push({name:'Login'})
+
+        })
       }else{
         alert('작성된 비밀번호가 다릅니다.')
       }

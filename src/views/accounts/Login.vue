@@ -36,7 +36,6 @@ export default {
         this.$emit('login')
         this.$router.push({name:'MovieList'})
         this.$store.dispatch('login',res.data.user.username)
-        
       })
       .catch(err=>{
         console.log(err)

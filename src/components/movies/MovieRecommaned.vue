@@ -9,13 +9,15 @@
     <div v-if="loading" class='center'>
       <p><scale-loader :loading="loading" :color="color" :size="size" id='loader'></scale-loader></p>
     </div>
-    <div v-if="show_movie_list.length">
+    <div v-if="genre_name" >
       <h1 class="m-5">
       <span v-for="(name,idx) in genre_name" :key='idx'>
          <b-btn @click="onclick(name)"><h3>{{name.toUpperCase()}} </h3></b-btn>| 
       </span>
       </h1>
-      <carousel-3d :startIndex='0' :display='7' :perspective='40' :width="400" :height="700" :space='500' :inverse-scaling="500" id='carousel' >
+    </div>
+    <div v-if="show_movie_list">
+      <carousel-3d :display='show_movie_list.length' :perspective='40' :width="400" :height="700" :space='500' :inverse-scaling="500" id='carousel' >
       <slide v-for="(item,i) in show_movie_list" :index='i' :key="i" id='slide' >
         <div>
           <img :src="'https://image.tmdb.org/t/p/w500'+item.poster_path" :alt="item.poster_path" id='image'>
@@ -23,8 +25,11 @@
         </div>
       </slide>
     </carousel-3d>
-
     </div>
+    <div v-else>
+      <h1>현재 추천할 영화가 없습니다.</h1>
+    </div>
+
     </div>
   </div>
 </template>
@@ -62,7 +67,9 @@ export default {
 
     },
     onclick(name){
+      console.log(name)
       this.show_movie_list = this.recommand[name]
+      console.log(this.show_movie_list)
     },
      setToken(){
       const token = localStorage.getItem('jwt')
@@ -91,6 +98,8 @@ export default {
       })
     },
     recommendMovie(){
+      this.$store.dispatch('removeList',[])
+      this.$store.dispatch('removeName',[])
       this.recommand = []
       this.show_movie_list=[]
       this.genre_name = []
@@ -124,8 +133,9 @@ export default {
     this.genre_name = this.$store.state.genre_name
     console.log(this.recommand,'dfgdfgfd')
     for (const key in this.recommand){
-      this.show_movie_list = this.recommand[key]
-      break
+      if(this.recommand[key].length > this.show_movie_list.length ){
+        this.show_movie_list = this.recommand[key]
+      }
     }    
     console.log(this.show_movie_list,'dddd')
     }else{

@@ -10,12 +10,18 @@ import Login from '@/views/accounts/Login'
 import LoadMap from '@/views/profile/LoadMap'
 import Profile from '@/views/profile/Profile'
 import UpdateProfile from '@/views/profile/UpdateProfile'
+import Test from '@/views/profile/Test'
 import Home from '@/views/Home'
 import MovieList from '@/views/movie/MovieList'
 import MovieRecommaned from '@/components/movies/MovieRecommaned'
 Vue.use(VueRouter)
 
 const routes = [
+  {
+    path:'/test',
+    name:'Test',
+    component:Test
+  },
   {
     path:'/map',
     name:'LoadMap',

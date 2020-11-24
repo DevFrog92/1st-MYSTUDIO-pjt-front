@@ -19,6 +19,9 @@
             <b-nav-item to="/movielist">MovieList</b-nav-item>
             </b-col>
             <b-col cols='4'>
+            <b-nav-item to="/test">Test</b-nav-item>
+            </b-col>
+            <b-col cols='4'>
             <b-nav-item to="/community">Community</b-nav-item>
             </b-col>
             <b-col cols='4'>
