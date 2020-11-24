@@ -1,34 +1,10 @@
 <template>
   <b-container fluid style="width:65%">
-      <div>
-    <b-button v-b-toggle.sidebar-right>Toggle Sidebar</b-button>
-    <b-sidebar id="sidebar-right" title="Sidebar" right shadow width="700px">
-      <div class="px-3 py-2">
-        <h1>Movie search</h1>
-        <input type="text" v-model="title" @keypress.enter="findMovie(title)">
-        <b-btn @click="findMovie(title)">Find</b-btn>
-        <div v-for="(item,idx ) in search_list" :key="idx">
-        <b-card no-body class="overflow-hidden" style="max-width: 540px; margin:20px auto">
-          <b-row no-gutters>
-            <b-col md="6">
-              <b-card-img :src="'https://image.tmdb.org/t/p/w500'+item.poster_path" alt="Image" class="rounded-0"></b-card-img>
-            </b-col>
-            <b-col md="6">
-              <b-card-body title="Horizontal Card">
-                <b-card-text>
-                  <h5>{{item.title}}</h5>
-                  <p>{{item.overview}}</p>
-                </b-card-text>
-              </b-card-body>
-            </b-col>
-          </b-row>
-          <b-btn @click="select(item)">Select</b-btn>
-        </b-card>
-      </div>
-      </div>
-    </b-sidebar>
-  </div>
+     
   <div v-if="profile" id='body'>
+  <b-row>
+
+  <b-col>
     <div class="form__group field">
   <input type="input" class="form__field" placeholder="Name" name="name" id='name' required v-model="nickname"/>
   <label for="name" class="form__label">NickName</label>
@@ -45,14 +21,54 @@
   <input type="input" class="form__field" placeholder="Name" name="name" id='name' required v-model="best_movie_id"/>
   <label for="name" class="form__label">Best Movie id</label>
   </div>
+  </b-col>
+  <b-col style="position:relative;">
+    <div style="position:absolute; top:50%; left:40%">
+    <b-button v-b-toggle.sidebar-right>나의 최애 영화 찾기</b-button>
+    <b-sidebar id="sidebar-right" title="" right shadow width="500px"  backdrop>
+      <div class="px-3 py-2">
+        <h1 style="font-weight:bold; margin-bottom:3rem;">Movie search</h1>
+        <input type="input" class="form__field" placeholder="Name" name="name" id='name'  @keypress.enter="findMovie(title)" required v-model="title"/>
+        <b-btn style="margin-top:40px;" @click="findMovie(title)">Find</b-btn>
+        <div v-if="search_list.length">
+
+        <div v-for="(item,idx ) in search_list" :key="idx">
+        <b-card no-body class="overflow-hidden" style="max-width: 540px; margin:20px auto">
+          <b-row no-gutters>
+            <b-col md="6">
+              <b-card-img :src="'https://image.tmdb.org/t/p/w500'+item.poster_path" alt="Image" class="rounded-0"></b-card-img>
+            </b-col>
+            <b-col md="6">
+              <b-card-body title="Horizontal Card">
+                <b-card-text>
+                  <h5>{{item.title}}</h5>
+                  <p>{{item.overview}}</p>
+                </b-card-text>
+              </b-card-body>
+            </b-col>
+          </b-row>
+          <b-btn  variant="primary" block  @click="select(item)">Select</b-btn>
+        </b-card>
+      </div>
+        </div>
+        <div v-else>
+          <p style="margin-top:50px;">입력하신 키워드의 영화를 찾지 못하였습니다. 영화 제목을 정확하게 입력하면, 보다 정확한 결과를 받을 수 있습니다.</p>
+        </div>
+      </div>
+    </b-sidebar>
+  </div>
+
+  </b-col>
+  </b-row>
     <div id="checked">
        <div class="row d-flex justify-content-center mt-100">
      <div class="col">
          <div class="card">
              <div class="card-body">
-                 <h4 class="card-title">선호 영화 장르 선택(3개이상)</h4>
+                 <h3 >선호 영화 장르 선택(3개이상)</h3>
+                 <hr>
                  <div > 
-                   <p style="font-size:20px; text-align:justify;">
+                   <p style="font-size:1rem; text-align:justify;">
                    <label> <input type="checkbox" class="option-input checkbox"  v-model='genres.sf' /> SF </label> 
                    <label> <input type="checkbox" class="option-input checkbox"  v-model='genres.war'/> War </label> 
                    <label> <input type="checkbox" class="option-input checkbox"  v-model='genres.music'/> Music </label> 
@@ -64,7 +80,7 @@
                    <label> <input type="checkbox" class="option-input checkbox"  v-model='genres.action'/> Action </label> 
                    </p>
                    <hr>
-                   <p style="font-size:20px; text-align:justify;">
+                   <p style="font-size:1rem; text-align:justify;">
                    <label> <input type="checkbox" class="option-input checkbox"  v-model='genres.history'/> History </label> 
                    <label > <input type="checkbox" class="option-input checkbox" v-model='genres.fantasy' /> Fantasy </label> 
                    <label> <input type="checkbox" class="option-input checkbox" v-model='genres.romance' /> Romance </label> 
@@ -176,6 +192,7 @@ export default {
       axios.put('http://127.0.0.1:8000/community/updateprofile/',profileItem,config)
       .then(res=>{
         console.log(res)
+        this.$router.push({name:'Profile'})
       })
     }
   },
@@ -199,7 +216,7 @@ export default {
     position: relative;
     padding: 15px 0 0;
     margin-top: 10px;
-    width: 50%;
+    width: 100%;
 }
 
 .form__field {

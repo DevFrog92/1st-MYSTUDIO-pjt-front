@@ -3,11 +3,10 @@
     <h1>Community</h1>
   <button @click="goToCreate">goToCreate</button>
   <hr>
-  <p v-for="review in reviews" :key="review.id">
+  <!-- <p v-for="review in reviews" :key="review.id">
     <span @click="detail(review)">{{review.title}}</span>
     <img :src='review.img' :alt="imagePath">
-    
-  </p>
+  </p> -->
   </div>
 </template>
 
@@ -42,7 +41,7 @@ export default {
         for (const r of res.data){
           const resItm = {
             ...r,
-            img : 'http://127.0.0.1:8000' + r.img
+            poster_path : 'http://127.0.0.1:8000' + r.poster_path
           }
           this.reviews.push(resItm)
         }
@@ -74,6 +73,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
+
 
 </style>

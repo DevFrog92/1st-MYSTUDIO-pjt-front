@@ -38,7 +38,9 @@ export default {
         this.$store.dispatch('login',res.data.user.username)
       })
       .catch(err=>{
-        console.log(err)
+        alert('존재하지 않는 사용자 입니다. 회원가입 후 이용해 주세요.')
+        console.log(err,'error 다 임마')
+        this.$router.push({name:'Signup'})
       })
     },
     

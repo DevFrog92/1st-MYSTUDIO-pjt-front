@@ -19,10 +19,13 @@
             <b-nav-item to="/movielist">MovieList</b-nav-item>
             </b-col>
             <b-col cols='4'>
+            <b-nav-item to="/community">Community</b-nav-item>
+            </b-col>
+            <b-col cols='4'>
             <b-nav-item to="/test">Test</b-nav-item>
             </b-col>
             <b-col cols='4'>
-            <b-nav-item to="/community">Community</b-nav-item>
+            <b-nav-item to="/test2">Test2</b-nav-item>
             </b-col>
             <b-col cols='4'>
             <b-nav-item to="/profile">Profile</b-nav-item>
@@ -85,6 +88,7 @@ export default {
     if(token){
       console.log('token state')
       this.login=true
+      // this.$router.push({name:'MovieList'})
     }else{
       this.$router.push({name:'Login'})
     }

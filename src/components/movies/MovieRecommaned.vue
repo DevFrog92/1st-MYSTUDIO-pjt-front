@@ -16,7 +16,7 @@
       </span>
       </h1>
     </div>
-    <div v-if="show_movie_list">
+    <div v-if="show_movie_list.length">
       <carousel-3d :display='show_movie_list.length' :perspective='40' :width="400" :height="700" :space='500' :inverse-scaling="500" id='carousel' >
       <slide v-for="(item,i) in show_movie_list" :index='i' :key="i" id='slide' >
         <div>
@@ -132,7 +132,8 @@ export default {
     this.recommand = this.$store.state.recommand
     this.genre_name = this.$store.state.genre_name
     console.log(this.recommand,'dfgdfgfd')
-    for (const key in this.recommand){
+    console.log(this.genre_name,'dfgdfgfd')
+    for (const key of this.genre_name){
       if(this.recommand[key].length > this.show_movie_list.length ){
         this.show_movie_list = this.recommand[key]
       }

@@ -1,6 +1,8 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Community from '@/views/community/Community'
+import Test from '@/views/community/Test'
+import Test2 from '@/views/community/Test2'
 import CreateReview from '@/components/community/CreateReview'
 import DetailReview from '@/components/community/DetailReview'
 import UpdateReview from '@/components/community/UpdateReview'
@@ -8,15 +10,24 @@ import MovieDetail from '@/components/movies/MovieDetail'
 import Signup from '@/views/accounts/Signup'
 import Login from '@/views/accounts/Login'
 import LoadMap from '@/views/profile/LoadMap'
-import Profile from '@/views/profile/Profile'
 import UpdateProfile from '@/views/profile/UpdateProfile'
-import Test from '@/views/profile/Test'
+import Profile from '@/views/profile/Profile'
 import Home from '@/views/Home'
 import MovieList from '@/views/movie/MovieList'
 import MovieRecommaned from '@/components/movies/MovieRecommaned'
 Vue.use(VueRouter)
 
 const routes = [
+  {
+    path:'/profile',
+    name:'Profile',
+    component:Profile
+  },
+  {
+    path:'/test2',
+    name:'Test2',
+    component:Test2
+  },
   {
     path:'/test',
     name:'Test',
@@ -26,11 +37,6 @@ const routes = [
     path:'/map',
     name:'LoadMap',
     component:LoadMap
-  },
-  {
-    path:'/profile',
-    name:'Profile',
-    component:Profile
   },
   {
     path:'/community',
