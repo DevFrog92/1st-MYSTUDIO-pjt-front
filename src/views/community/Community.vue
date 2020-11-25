@@ -1,5 +1,6 @@
 <template>
   <div id="app" style="background-color:black;">
+
     <div class="container" style="padding-top:5rem">
       <a style="text-decoration:none; color:white; cursor: pointer;" class="cta" @click="goToCreate">
   <span> + Review</span>
@@ -103,8 +104,9 @@
                 </b-col>
               <p><b-btn class="p-1" @click="likeReview(temp)">좋아요</b-btn> {{count}} 명이 이 글을 좋아합니다.</p>
               </b-row>
+              <star-rating :config="config"></star-rating>
             </b-card>
-            <b-btn class="p-1" @click="updateReview(temp)">Update</b-btn>
+
           </b-modal>
       </div>
     </div>
@@ -130,12 +132,21 @@ export default {
      temp_comment:null,
      video_url :'https://www.youtube.com/embed/',
      movie_reviews:[],
+     config: {
+            rating: 3,
+            style: {
+                fullStarColor: '#ed8a19',
+                emptyStarColor: '#737373',
+                starWidth: 30,
+                starHeight: 30
+            }
+        }
 
    }
   },
   components: { 
     Stack, 
-    StackItem 
+    StackItem,
   },
   methods:{
     updateComment(comment){

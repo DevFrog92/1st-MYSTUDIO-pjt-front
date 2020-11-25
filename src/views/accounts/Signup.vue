@@ -1,6 +1,9 @@
 <template>
 
   <div class="top-div">
+    <div>
+      <img src="http://127.0.0.1:8000/api/Logo/Logo.png" width="20%" alt="Logo">
+    </div>
     <div class="box_signup">
       <form>
         <span class="text-center">Signup</span>
@@ -76,7 +79,7 @@ export default {
 @import url('https://fonts.googleapis.com/css?family=Noto+Sans:400,400i,700,700i&subset=greek-ext');
 
 .top-div{
-	background-image: url("http://127.0.0.1:8000/api/%ED%8F%AC%EC%8A%A4%ED%84%B0%EC%99%84%EC%84%B12.png");
+	bbackground-image: url("http://127.0.0.1:8000/api/background.png");
 	background-position: center;
     background-origin: content-box;
     background-repeat: no-repeat;

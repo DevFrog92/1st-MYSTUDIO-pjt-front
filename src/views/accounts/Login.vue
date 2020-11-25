@@ -1,6 +1,9 @@
 <template>
 
   <div class="top-div">
+    <div>
+      <img src="http://127.0.0.1:8000/api/Logo/Logo.png" width="20%" alt="Logo">
+    </div>
     <div class="box_login">
       <form>
         <span class="text-center">login</span>
@@ -59,8 +62,8 @@ export default {
   created(){
     const token = localStorage.getItem('jwt')
     if (token){
-       alert('로그인한 회원은 접근할 수 없습니다. 홈이동')
-      this.$router.push({name:'Home'})
+       alert('로그인한 회원은 접근할 수 없습니다')
+      this.$router.push({name:'MovieList'})
     }
   }
 }
@@ -71,7 +74,7 @@ export default {
 @import url('https://fonts.googleapis.com/css?family=Noto+Sans:400,400i,700,700i&subset=greek-ext');
 
 .top-div{
-	background-image: url("http://127.0.0.1:8000/api/%ED%8F%AC%EC%8A%A4%ED%84%B0%EC%99%84%EC%84%B12.png");
+	background-image: url("http://127.0.0.1:8000/api/background.png");
 	background-position: center;
     background-origin: content-box;
     background-repeat: no-repeat;

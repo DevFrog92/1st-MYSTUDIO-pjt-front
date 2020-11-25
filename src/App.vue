@@ -17,7 +17,7 @@
           </b-navbar-nav>
   </b-navbar>
       </div>      
-      <router-view @login='login=true'/>  
+      <router-view :key="$route.fullPath" @login='login=true' />  
   </div>
 </template>
 

@@ -10,7 +10,6 @@ import Login from '@/views/accounts/Login'
 import LoadMap from '@/views/profile/LoadMap'
 import UpdateProfile from '@/views/profile/UpdateProfile'
 import Profile from '@/views/profile/Profile'
-import Home from '@/views/Home'
 import MovieList from '@/views/movie/MovieList'
 import MovieRecommaned from '@/components/movies/MovieRecommaned'
 Vue.use(VueRouter)
@@ -77,15 +76,10 @@ const routes = [
     component:Signup
   },
   {
-    path: '/login',
+    path: '/',
     name:'Login',
     component:Login
   },
-  {
-    path: '/home',
-    name:'Home',
-    component:Home
-  }
 ]
 
 const router = new VueRouter({

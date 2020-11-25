@@ -1,85 +1,121 @@
 <template >
 <div style="background-color:black;" id="body">
-  <div>
-    <a href="#">
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        Neon button
-    </a>
-    <a href="#">
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        Neon button
-    </a>
-    <a href="#">
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        Neon button
-    </a>
 
-  </div>
-  <b-container id='detail-container' fluid style="width:50%" >
-  <b-row class="mb-3">
-  <b-col cols="10" class="p-0">
-
-    <b-embed
-     type="iframe"
-    aspect="16by9"
-    :src="video_url"
-    allowfullscreen>
-    </b-embed>  
-  </b-col>
-  <b-col cols="2">
-
-  <div class="outer m-0">
-    <div class="inner ">
-      <label @click="Back" class="label_2">Back</label>
-    </div>
-  </div>
-  <div>
-
-    <b-btn class="m-0 p-0" @click="favorite(movie)">좋아요</b-btn>
-  </div>
-  <div>
-
-    <b-btn class="m-0 p-0" @click="favorite(movie)">좋아요</b-btn>
-  </div>
-  </b-col>
-    </b-row>
-
+  
+  <b-container id='detail-container' fluid style="width:80%;padding-left:0;padding-right:0;margin-top:4rem;" >
+      <div style="border:4px double #6A16CD; padding:1rem;">
     <b-row>
-    <b-col class="p-0">
-    <b-card :img-src="movie.poster_path" img-alt="Card image" img-width="40%" img-height="" img-left style="border:4px double #6A16CD; background-color:black;" >
-      <b-card-text style="height:100px; ">
-        <b-jumbotron class="pt-0" style="background-color:black;width:100%;height:100%;">
-        <h2 style="font-weight: bold; font-size:1.5rem; color:white;">{{movie.title}}</h2>
-        <p class="mt-3" style="font-size:0.8rem; color:white;">{{movie.overview}}</p>
-        <p class='mb-0'>Popularity : {{movie.popularity}}</p>
-        <p class='mb-0'>Release Date : {{movie.release_date}}</p>
-        <p class='mb-0'>Vote Average : {{movie.vote_average}}</p>
-
-        <hr class="my-1 ">
-        <div class="d-flex justify-content-between mt-3">
-        <b-button variant="primary" href="#">Do Something</b-button>
-        <b-button variant="success" href="#">Do Something Else</b-button>
+      <b-col cols="4">
+        <img :src="movie.poster_path" alt="" width="100%">
+      </b-col>
+      <b-col cols="7">
+        <b-row>
+          <b-col>
+            <b-embed
+        type="iframe"
+        aspect="16by9"
+        :src="video_url"
+        allowfullscreen>
+        </b-embed>  
+          </b-col>
+        </b-row>
+        <b-row style="padding:1rem;display:block;color:white;text-align:left;">
+          <h2>{{movie.title}}</h2>
+          <hr style="background-color:white;" class="my-3">
+          
+          <p class="mt-3" style="font-size:0.8rem; color:white;">{{movie.overview}}</p>
+          <p class='mb-0'>Popularity : {{movie.popularity}}</p>
+          <p class='mb-0'>Release Date : {{movie.release_date}}</p>
+          <p class='mb-0'>Vote Average : {{movie.vote_average}}</p>
+        </b-row>
+        <b-row class="d-flex justify-content-end m-0 p-0">
+        
+        </b-row>
+      </b-col>
+      <b-col cols='1' >
+        <div class="outer ">
+        <div class="inner ">
+          <label @click="Back" class="label_2">Back</label>
         </div>
-      </b-jumbotron>
-      </b-card-text>
-    </b-card>
-    </b-col>    
+        </div>
+        <a href="#" @click="favorite(movie)">
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <div v-if="fav_state">
+            <b-icon-star-fill></b-icon-star-fill>
+            </div>
+            <div v-else>
+            <b-icon-star></b-icon-star>
+
+            </div>
+        </a>
+        <a href="#" v-b-modal.modal-lg @click="getMovieReview(movie)">
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <b-icon-list-ul></b-icon-list-ul>
+        </a>
+        <a href="#" @click="getSimilar()">
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <b-icon-chevron-double-down></b-icon-chevron-double-down>
+        </a>
+      </b-col>
+
     </b-row>
-  </b-container>
+      </div >
+      <div v-if="similar_state">
+        <div v-if="similar.length">
+        <carousel-3d :startIndex='similar.length - 2' :display='7' :perspective='40' :width="300" :height="600" :space='350' :inverse-scaling="500" id='carousel' >
+      <slide v-for="(movie,i) in similar" :index='i' :key="i" id='slide'>
+        <div>
+          <img :src="movie.poster_path" :alt="movie.title" id='image'>
+          <button @click="onClick(movie)" class="outline-button">{{movie.title}}</button>
+        </div>
+      </slide>
+  </carousel-3d>
+        </div>
+        <div v-else class="mt-5">
+          <h2 style="color:white;">관련 영화가 없습니다.</h2>
+        </div>
+      </div>
+<b-modal tabindex="-1" id="modal-lg" size="lg" centered :title="movie.title">
+            <b-card no-body class="overflow-hidden" style="max-width: 100%;">
+              <b-row no-gutters>
+              
+              </b-row>
+              <hr>
+              <b-row>
+                <ul>
+  
+                  <li v-for="(movie_review,idx) in movie_reviews" :key='idx' p class="px-2">
+                    <b-card :title="movie_review.auth" >
+                    <b-card-text>
+                      <p style="text-align:justify;" >{{movie_review.content}}</p>
+                    </b-card-text>
+                    <b-card-text class="mt-2">
+                      <p>Rating :  {{movie_review.author_details.rating}}</p>
+                      <p>Reporting date : {{movie_review.created_at}}</p>
+                    </b-card-text>
+                  </b-card>
+                    </li>
+                </ul>
+              </b-row>
+            </b-card>
+        </b-modal>
+</b-container>
 </div>
 </template>
 
 <script>
 import axios from 'axios'
+// import { Carousel3d, Slide } from 'vue-carousel-3d'
+
 export default {
   name:'MovieDetail',
   props:{
@@ -90,12 +126,38 @@ export default {
       type:String
     }
   },
+  // components: {
+    // Carousel3d,
+    // Slide,
+  // },
   data(){
     return {
-      video_url:'https://www.youtube.com/embed/'
+      video_url:'https://www.youtube.com/embed/',
+      fav_state:false,
+      movie_reviews:[],
+      similar:[],
+      similar_state:false
     }
   },
   methods:{
+     getMovieReview(movie){
+      const key = 'e37c0ae71977e8ad20b5a3f6caa339a1'
+      const movie_id = movie.id
+      console.log(movie_id)
+
+      axios.get(`https://api.themoviedb.org/3/movie/${movie_id}/reviews?api_key=${key}&language=en-US&page=1`)
+      .then(res=>{
+        console.log(res.data)
+        this.movie_reviews = res.data.results
+        this.movie_reviews = this.movie_reviews.map(review=>{
+          const item = {
+            ...review,
+            created_at: review.created_at.slice(0,10)
+          }
+          return item
+        })
+      })
+    },
     setToken(){
       const token = localStorage.getItem('jwt')
       const config = {
@@ -118,11 +180,58 @@ export default {
 
       axios.post(`http://127.0.0.1:8000/movie/${movie.id}/favorite_read_save/`,movieItem,config)
       .then(res=>{
-        console.log(res)
+        console.log(res.data)
+        this.check_favorite()
       })
 
     },
+    getSimilar(){
+      const key = 'e37c0ae71977e8ad20b5a3f6caa339a1'
+      const movie_id = this.movie.id
+      axios.get(`https://api.themoviedb.org/3/movie/${movie_id}/similar?api_key=${key}&language=en-US&page=1`)
+      .then(res=>{
+        console.log(res.data.results)
+        this.similar = res.data.results
+        this.similar = this.similar.map(item=>{
+          const temp = {
+            ...item,
+            poster_path: 'https://image.tmdb.org/t/p/w500'+item.poster_path
+          }
+          return temp
+        })
+        console.log(this.similar,'dsssssssssss')
+      this.similar_state = true
+      
+
+      })
+      .then(()=>{
+        window.scrollTo(200, 700)
+      })
+
+    },
+    onClick(movie){
+      this.movie = movie
+      this.getVideos()
+      window.scrollTo(0,0)
+      // this.$router.push({name:'MovieDetail',params:{movie:movie,page:'List'}})
+    },
+    check_favorite(){
+      const config = this.setToken()
+      axios.get(`http://127.0.0.1:8000/movie/${this.movie.id}/favorite_state/`,config)
+      .then(res=>{
+        console.log(res.data.state,'sdfsdfsdfsdfsdfsdf')
+        this.fav_state = res.data.state
+      })
+    },
+    readFavorite(movie){
+      const config = this.setToken()
+      axios.get(`http://127.0.0.1:8000/movie/${movie.id}/favorite_read_save/`,config)
+      .then(res=>{
+        console.log(res.data.state)
+      })
+    },
     getVideos(){
+      this.video_url = 'https://www.youtube.com/embed/'
       const key = 'e37c0ae71977e8ad20b5a3f6caa339a1'
       const movie_id = this.movie.id
       console.log(movie_id)
@@ -131,6 +240,7 @@ export default {
         console.log(res.data.results[0].key)
         this.video_url = this.video_url + res.data.results[0].key
         console.log(this.video_url)
+        this.check_favorite()
       })
     },
     Back(){
@@ -146,6 +256,7 @@ export default {
   const token = localStorage.getItem('jwt')
   if (token){
     this.getVideos()
+    
     }else{
       alert('로그인한 회원만 접근할 수 있습니다.')
      this.$router.push({name:'Home'})
@@ -164,28 +275,19 @@ export default {
     box-sizing: border-box;
 }
 
-#body {
-    /* display: flex; */
-    /* justify-content: center;
-    align-items: center; */
-    /* height: 100vh; */
-    /* background: #050801;
-    font-family: 'Raleway', sans-serif;
-    font-weight: bold; */
-}
 
 a {
     position: relative;
     display: inline-block;
-    padding: 25px 30px;
-    margin: 40px 0;
+    padding: 1.3rem 1.3rem;
+    margin: 1.3rem 0;
     color: #03e9f4;
     text-decoration: none;
     text-transform: uppercase;
     transition: 0.5s;
     letter-spacing: 4px;
     overflow: hidden;
-    margin-right: 50px;
+    margin-right: 0.8em;
 }
 
 a:hover {
@@ -294,11 +396,12 @@ a span:nth-child(4) {
 
 .outer {
   position: relative;
-  /* float:right;
-  margin: 0px 15px; */
+  float:right;
+  margin: 0px 0.8rem;
   width: 70px;
-  margin-top: 100px;
+  margin-top:1rem;
   cursor: pointer;
+  margin-bottom: 2rem;
 }
 
 .inner {
