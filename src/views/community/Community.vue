@@ -18,15 +18,47 @@
                 style="transition: transform 300ms"
         >
           <div class="img">
-            <div class="content">
-              <h1>Text</h1>
-            </div>
               <img @click="imageClick(image)" v-b-modal.modal-xl :src="image.poster_path" :alt="image.movie_title" />
+            <div class="content">
+              <b-btn  @click="btnClick(image)" v-b-modal.modal-lg>{{image.username}}</b-btn>
+            </div>
               
           </div>
         </Stack-item>
       </Stack>
       <div v-if="temp">
+        <b-modal tabindex="-1" id="modal-lg" size="lg" centered :title="temp.movie_title">
+            <b-card no-body class="overflow-hidden" style="max-width: 100%;">
+              <b-row no-gutters>
+                <b-embed
+                  type="iframe"
+                  aspect="16by9"
+                  :src="video_url"
+                  allowfullscreen>
+                  </b-embed>  
+              <p><b-btn class="p-1 m-4" @click="likeReview(temp)">좋아요</b-btn> {{count}} 명이 이 글을 좋아합니다.</p>
+              </b-row>
+              <hr>
+              <b-row>
+                <ul>
+                  <li v-for="(movie_review,idx) in movie_reviews" :key='idx'>
+                    <b-card :title="movie_review.auth" >
+                    <b-card-text>
+                      <p>{{movie_review.content}}</p>
+                    </b-card-text>
+                    <b-card-text>
+                      {{movie_review.author_details.rating}}
+                      <p>Reporting date : {{movie_review.created_at}}</p>
+                    </b-card-text>
+                    <a href="#" class="card-link">Card link</a>
+                    <b-link href="#" class="card-link">Another link</b-link>
+                  </b-card>
+                    </li>
+                </ul>
+              </b-row>
+            </b-card>
+        </b-modal>
+
         <b-modal tabindex="-1" id="modal-xl" size="xl" centered :title="temp.movie_title">
             <b-card no-body class="overflow-hidden" style="max-width: 100%;">
               <b-row no-gutters>
@@ -35,23 +67,44 @@
                 </b-col>
                 <b-col md="8">
                   <div class="m-3 ">
-                    <h2>{{temp.movie_title}} <span>{{temp.rank}}</span> </h2>
-                    <b-card-text>
-                      {{temp.content}}
-                      <p>{{temp.created_at}}</p>
+                    <div class="d-flex justify-content-between mb-3">
+                    <h2 class="m-0">{{temp.movie_title}} <span>{{temp.rank}}</span> </h2>
+                    <h5 class="m-0 pt-3" >Written by : {{temp.username}}</h5>
+                    </div>
+                    <b-card-text >
+                      <p>{{temp.content}}</p>
+                      <div class="d-flex justify-content-end">
+                      <p style="margin-right:0;">Reporting date : {{temp.created_at}}</p>
+                      </div>
                     </b-card-text>
                     <hr>
-                    <div class="d-flex justify-content-between"><b-form-input style="width:85%;height:50px;" @keypress.enter="createComment(temp)" v-model="comment"></b-form-input><b-button @click="createComment(temp)">Submit</b-button></div>
+                    <div class="d-flex justify-content-between"><b-form-input style="width:85%;height:50px;" @keypress.enter="createComment(temp)" v-model="comment"></b-form-input><b-button class="p-1" @click="createComment(temp)">Submit</b-button></div>
                     <hr>
+                      <div v-if="updating">
                     <ol>
-                      <li v-for="(comment,idx) in comment_list" :key='idx'><div class="d-flex justify-content-between"><p class="mx-3">{{comment.content}}</p><p class="mx-3">By : {{comment.username}}</p><b-btn @click="commentDelete(comment)">DELETE</b-btn></div></li>
+                      <li v-for="(comment,idx) in comment_list" :key='idx'>
+                          <div class="d-flex justify-content-between">
+                          <div>
+                          <p class="mx-3 d-inline">{{comment.content}}</p>
+                          </div>
+                          <div>
+                          <p class="mb-0 d-inline"><span class="d-block"> By : {{comment.username}} </span><span> created at : {{comment.created_at}}</span></p>
+                          <b-btn class="p-1" @click="commentUpdate(comment)">UPDATE</b-btn>
+                          <b-btn class="p-1" @click="commentDelete(comment)">DELETE</b-btn>
+                          </div>
+                          </div>
+                      </li>
                     </ol>
+                      </div>
+                      <div v-else>
+                      <div class="d-flex justify-content-between"><b-form-input v-model='comment_update' style="width:85%;height:50px;" @keypress.enter="updateComment(comment)"></b-form-input><b-button class="p-1" @click="updateComment(comment)">Submit</b-button></div>  
+                      </div>
                   </div>
                 </b-col>
-              <p><b-btn @click="likeReview(temp)">좋아요</b-btn> {{count}} 명이 이 글을 좋아합니다.</p>
+              <p><b-btn class="p-1" @click="likeReview(temp)">좋아요</b-btn> {{count}} 명이 이 글을 좋아합니다.</p>
               </b-row>
             </b-card>
-            <b-btn @click="updateReview(temp)">Update</b-btn>
+            <b-btn class="p-1" @click="updateReview(temp)">Update</b-btn>
           </b-modal>
       </div>
     </div>
@@ -72,6 +125,12 @@ export default {
      comment_list:[],
      count:null,
      liked:null,
+     updating:true,
+     comment_update:null,
+     temp_comment:null,
+     video_url :'https://www.youtube.com/embed/',
+     movie_reviews:[],
+
    }
   },
   components: { 
@@ -79,6 +138,26 @@ export default {
     StackItem 
   },
   methods:{
+    updateComment(comment){
+      console.log(comment)
+      const config = this.setToken()
+      const commentItem = new FormData()
+      commentItem.append('content',this.comment_update)
+      axios.put(`http://127.0.0.1:8000/community/review/${this.temp_comment_id}/delete_update_comment/`,commentItem,config)
+      .then(()=>{
+        this.readComment(this.temp)
+        this.comment = ''
+        this.updating = true
+        
+      })
+    },
+    commentUpdate(comment){
+      console.log(comment)
+      console.log('upatecomment')
+      this.temp_comment_id = comment.id
+      this.comment_update = comment.content
+      this.updating = false
+    },
     setToken(){
       const token = localStorage.getItem('jwt')
       const config = {
@@ -110,6 +189,13 @@ export default {
       axios.get(`http://127.0.0.1:8000/community/review/${temp.id}/read_create_comment/`,config)
       .then(res=>{
         this.comment_list = res.data
+        this.comment_list = this.comment_list.map(comment=>{
+          const item = {
+            ...comment,
+            created_at : comment.created_at.slice(0,10)
+          }
+          return item
+        })
       })
     },
     createComment(temp){
@@ -145,6 +231,43 @@ export default {
       this.getlike(this.temp)
       this.readComment(this.temp)
     },
+    btnClick(image){
+      this.temp = image
+      this.video_url = 'https://www.youtube.com/embed/'
+      this.getlike(this.temp)
+      this.getVideos(this.temp)
+      this.getMovieReview(this.temp)
+    },
+    getVideos(temp){
+      const key = 'e37c0ae71977e8ad20b5a3f6caa339a1'
+      const movie_id = temp.movie_id
+      console.log(movie_id)
+      axios.get(`https://api.themoviedb.org/3/movie/${movie_id}/videos?api_key=${key}&language=en-US`)
+      .then(res=>{
+        console.log(res.data)
+        console.log(res.data.results[0].key)
+        this.video_url = this.video_url + res.data.results[0].key
+        console.log(this.video_url)
+      })
+    },
+    getMovieReview(temp){
+      const key = 'e37c0ae71977e8ad20b5a3f6caa339a1'
+      const movie_id = temp.movie_id
+      console.log(movie_id)
+      
+      axios.get(`https://api.themoviedb.org/3/movie/${movie_id}/reviews?api_key=${key}&language=en-US&page=1`)
+      .then(res=>{
+        console.log(res.data)
+        this.movie_reviews = res.data.results
+        this.movie_reviews = this.movie_reviews.map(review=>{
+          const item = {
+            ...review,
+            created_at: review.created_at.slice(0,10)
+          }
+          return item
+        })
+      })
+    },
     searchUnsplash(topic) { 
     this.images = []; 
     axios.get( `https://api.unsplash.com/search/photos?query=${topic}&per_page=20`, 
@@ -170,7 +293,8 @@ export default {
         for (const r of res.data){
           const resItm = {
             ...r,
-            poster_path : 'https://image.tmdb.org/t/p/w500' + r.poster_path
+            poster_path : 'https://image.tmdb.org/t/p/w500' + r.poster_path,
+            created_at : r.created_at.slice(0,10)
           }
           this.reviews.push(resItm)
         }
@@ -204,13 +328,14 @@ export default {
     margin-bottom: 25px; 
 } 
 .btn { 
-    font-size: 18px; 
+    font-size: 1rem; 
     background-color: #42b983; 
     color: white; padding: 10px 20px;
 }
 
 .btn:not(:last-child) { 
-    margin-right: 10px; 
+    margin-right: 10px;
+    margin-left: 10px;
 }
 
 img { 
@@ -244,10 +369,10 @@ background-size: cover;
 
 .img .content{
  position: absolute;
- top:8%;
- left:15%;
+ top:50px;
+ left:20%;
  transform: translate(-50%, -50%);                                                                   
- font-size:5rem;
+ font-size:2rem;
  color:white;
  z-index: 2;
  text-align: center;

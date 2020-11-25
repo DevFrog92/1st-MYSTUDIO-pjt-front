@@ -19,7 +19,6 @@
               <b-card-body title="Horizontal Card">
                 <b-card-text>
                   <h5>{{item.title}}</h5>
-                  <p>{{item.overview}}</p>
                 </b-card-text>
               </b-card-body>
             </b-col>
@@ -122,8 +121,8 @@ export default {
       axios.post('http://127.0.0.1:8000/community/',info,config)
       .then(res=>{
         console.log(res.data)
-        const review = res.data
-        this.$router.push({name:'DetailReview',params: {review}})
+        // const review = res.data
+        this.$router.push({name:'Community'})
       })
     }
   },

@@ -48,7 +48,13 @@ export default {
     },
   },
   created(){
-    this.getBackImg()
+    const token = localStorage.getItem('jwt')
+    if (token){
+      alert('로그인한 회원은 접근할 수 없습니다. 무비이동')
+      this.$router.push({name:'MovieList'})
+    }else{
+      this.getBackImg()
+    }
   }
 }
 </script>

@@ -55,8 +55,13 @@ export default {
     signup(){
       this.$router.push({name:'Signup'})
     }
-    
-    
+  },
+  created(){
+    const token = localStorage.getItem('jwt')
+    if (token){
+       alert('로그인한 회원은 접근할 수 없습니다. 홈이동')
+      this.$router.push({name:'Home'})
+    }
   }
 }
 </script>
