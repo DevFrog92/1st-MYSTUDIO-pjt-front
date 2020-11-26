@@ -4,8 +4,8 @@
       <b-navbar toggleable type="dark" style="background-color:black;" id="nav" >
         <b-navbar-brand href="#" to='/movielist' id="nav-head" >
         <div>
-          <!-- <img src="http://127.0.0.1:8000/api/logo/logo.png" alt="logo" style="float:left;" width="20%"> -->
-          <b-img src="http://127.0.0.1:8000/api/logo/logo.png" alt="Responsive image" style="float:left;" width="20%"></b-img>
+          <img src="http://127.0.0.1:8000/api/logo/logo.png" alt="logo" style="float:left;" width="20%">
+          <!-- <b-img src="http://127.0.0.1:8000/api/logo/logo.png" style="float:left;" width="20%"></b-img> -->
           </div>
           </b-navbar-brand>
           <b-navbar-nav class="ml-auto mr-4">

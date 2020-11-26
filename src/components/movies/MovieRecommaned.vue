@@ -1,18 +1,34 @@
 <template>
-  <div>
-    <div class="mt-5">
-    <b-btn @click="recommendMovie" class="my-5 p-1 text-align-center" style="font-size:40px;">A movie just for you!</b-btn>
-    <div v-if="loading">
-      <h1>Searching...</h1>
+
+  <div >
+    <div class="btn_new" @click="recommendMovie">
+      <svg width="277" height="62">
+        <defs>
+            <linearGradient id="grad1">
+                <stop offset="0%" stop-color="#FF8282"/>
+                <stop offset="100%" stop-color="#E178ED" />
+            </linearGradient>
+        </defs>
+        <rect x="5" y="5" rx="25" fill="none" stroke="url(#grad1)" width="266" height="50"></rect>
+      </svg>
+      <span>RECOMMEND MOVIE</span>
     </div>
-    <hr>
+
+    <!-- <div v-if="loading">
+      <h1>Searching...</h1>
+    </div> -->
+    <!-- <hr> -->
     <div v-if="loading" class='center'>
       <p><scale-loader :loading="loading" :color="color" :size="size" id='loader'></scale-loader></p>
     </div>
     <div v-if="genre_name" >
       <h1 class="m-5">
       <span v-for="(name,idx) in genre_name" :key='idx'>
-         <b-btn @click="onclick(name)"><h3>{{name.toUpperCase()}} </h3></b-btn>| 
+        
+      <div style="display:inline; ">
+        <button @click="onclick(name)" style="width:140px; font-size:18px; height:50px; font-family: ''Roboto', sans-serif;" class="raise"><p>{{name.toUpperCase()}} </p></button>
+      </div>
+
       </span>
       </h1>
     </div>
@@ -20,15 +36,8 @@
   
 
 
-
-
-
-
-
-
-
-    <div class="container" style="padding-top:5rem">
-      <div class="button-wrapper mt-5">
+    <div class="container" >
+      <div class="button-wrapper">
       </div>
       <Stack
               :column-min-width="300"
@@ -50,7 +59,7 @@
         </Stack-item>
       </Stack>
       <div v-if="temp">
-        <b-modal tabindex="-1" id="modal-lg" size="lg" centered :title="temp.movie_title">
+        <b-modal  tabindex="-1" id="modal-lg" size="lg" centered :title="temp.movie_title">
             <b-card no-body class="overflow-hidden" style="max-width: 100%;">
               <b-row no-gutters>
                 <b-embed
@@ -59,7 +68,15 @@
                   :src="video_url"
                   allowfullscreen>
                   </b-embed>  
-              <p><b-btn class="p-1 m-4" @click="likeReview(temp)">좋아요</b-btn> {{count}} 명이 이 글을 좋아합니다.</p>
+              <p><b-btn class="p-1 m-4" @click="likeReview(temp)">
+                  <div v-if="liked">
+            <b-icon-heart-fill></b-icon-heart-fill>
+            </div>
+            <div v-else>
+            <b-icon-heart></b-icon-heart>
+
+            </div>
+                </b-btn> {{count}} 명이 이 글을 좋아합니다.</p>
               </b-row>
               <hr>
               <b-row>
@@ -136,18 +153,11 @@
 
 
 
-
-
-
-
-
-
     </div>
     <div v-else>
-      <h1>현재 추천할 영화가 없습니다.</h1>
+      <h2 style="margin:200px auto; font-family: 'Noto Sans', sans-serif; font-weight:bold; color:white;">현재 추천할 영화가 없습니다.</h2>
     </div>
 
-    </div>
   </div>
 </template>
 
@@ -403,17 +413,6 @@ export default {
 </script>
 
 <style scoped>
-.center {
-  position: relative;
-  margin: 100px 0;
-}
-#loader {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%,-50%);
-}
-
 .container { 
     width: 80vw; 
     margin: 0 auto; 
@@ -450,6 +449,8 @@ img {
 
 .img{
 position: relative;
+/* background-image: url(https://jaguar.ssl.cdn.sdlmedia.com/636353687510047376OV.jpg?v=24);                                                                */
+/* height: 100vh; */
 background-size: cover;
 }
 
@@ -471,4 +472,199 @@ background-size: cover;
  z-index: 2;
  text-align: center;
 }
+
+#modal-center {
+  height: auto;
+  /* width: 700px; */
+  min-height: 100%;
+  border-radius: 15px; 
+}
+
+#app{
+  background-color: black;
+}
+
+	
+.cta {
+    position: relative;
+    margin: auto;
+    padding: 19px 22px;
+    transition: all .2s ease;
+}
+
+.cta:before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: block;
+    border-radius: 28px;
+    background:#6b16cd4b;
+    width: 56px;
+    height: 56px;
+    transition: all .3s ease;
+}
+
+.cta span {
+    position: relative;
+    font-size: 16px;
+    line-height: 18px;
+    font-weight: 900;
+    letter-spacing: .25em;
+    text-transform: uppercase;
+    vertical-align: middle;
+}
+
+.cta svg {
+    position: relative;
+    top: 0;
+    margin-left: 10px;
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke: #111;
+    stroke-width: 2;
+    transform: translateX(-5px);
+    transition: all .3s ease;
+}
+
+.cta:hover:before {
+    width: 100%;
+    background:#690fcf91;
+}
+
+.cta:hover svg {
+    transform: translateX(0);
+}
+
+.cta:active {
+    transform: scale(0.96);
+}
+
+
+
+
+/* 
+body{
+  width: 100%;
+  height:100%;
+  position:relative;
+  overflow:hidden;
+  background: 
+    linear-gradient(
+      rgba(0, 0, 0, 0.7), 
+      rgba(0, 0, 0, 0.7)
+    ),
+    black url('https://images.unsplash.com/photo-1439723680580-bfd9d28ef9b6?crop=entropy&fit=crop&fm=jpg&h=950&ixjsv=2.1.0&ixlib=rb-0.3.5&q=80&w=1925') 50% 50% no-repeat;
+   //background: 
+     linear-gradient(
+      rgba(0, 0, 0, 0.7), 
+      rgba(0, 0, 0, 0.7)
+    ),
+     rgba(220, 220, 220, 1) url('https://images.unsplash.com/photo-1449157291145-7efd050a4d0e?crop=entropy&fit=crop&fm=jpg&h=950&ixjsv=2.1.0&ixlib=rb-0.3.5&q=80&w=1925') 50% 50% no-repeat;
+  //background-blend-mode: exclusion;
+  background-blend-mode: luminosity;
+  
+ 
+} */
+
+/* 
+.container{
+
+
+
+  height:100%;
+ position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+} */
+.btn_new {
+    /* margin-top: calc(50% + 25px); */
+    margin-top: 7rem;
+    position: relative;
+    display: inline-block;
+    width: 277px;
+    height: 50px;
+    font-size: 1em;
+    font-weight: bold;
+    line-height: 60px;
+    text-align: center;
+    text-transform: uppercase;
+    background-color: transparent;
+    cursor: pointer;
+    text-decoration:none;
+    font-family: 'Roboto', sans-serif;
+    font-weight:900;
+    font-size:17px;
+    letter-spacing: 0.045em;
+}
+
+.btn_new svg {
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.btn_new svg rect {
+    /* //stroke: #EC0033; */
+    stroke-width: 4;
+    stroke-dasharray: 353, 0;
+    stroke-dashoffset: 0;
+    -webkit-transition: all 600ms ease;
+    transition: all 600ms ease;
+}
+
+.btn_new span{
+  background: rgb(255,130,130);
+  background: -moz-linear-gradient(left,  rgba(255,130,130,1) 0%, rgba(225,120,237,1) 100%);
+  background: -webkit-linear-gradient(left,  rgba(255,130,130,1) 0%,rgba(225,120,237,1) 100%);
+  background: linear-gradient(to right,  rgba(255,130,130,1) 0%,rgba(225,120,237,1) 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ff8282', endColorstr='#e178ed',GradientType=1 );
+  
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.btn_new:hover svg rect {
+    stroke-width: 4;
+    stroke-dasharray: 196, 543;
+    stroke-dashoffset: 437;
+}
+
+
+.raise:hover,
+.raise:focus {
+    box-shadow: 0 0.5em 0.5em -0.4em var(--hover);
+    transform: translateY(-0.25em);
+}
+
+
+.raise {
+    --color: #a972cb;
+    --hover: #c616cd;
+}
+
+
+button {
+    color: var(--color);
+    transition: 0.25s;
+}
+
+button:hover, button:focus {
+    border-color: var(--hover);
+    color: #fff;
+}
+
+
+button {
+    background: none;
+    border: 1px solid;
+    font: inherit;
+    line-height: 1;
+    margin: 0.5em;
+    padding: 10px;
+}
+
+
 </style>

@@ -14,7 +14,7 @@
                 style="transition: transform 300ms"
         >
           <div class="img">
-              <img class="this_image" @click="imageClick(image)" v-b-modal.modal-xl :src="image.poster_path" :alt="image.movie_title" />
+              <img class="img-1" @click="imageClick(image)" v-b-modal.modal-xl :src="image.poster_path" :alt="image.movie_title" />
             <div class="content">
               <b-btn  @click="btnClick(image)" v-b-modal.modal-lg>{{image.username}}</b-btn>
             </div>
@@ -197,7 +197,7 @@ export default {
     margin-left: 10px;
 }
 
-img { 
+.img-1 { 
     width: 100%; 
     height: auto; 
     opacity: 0.7;

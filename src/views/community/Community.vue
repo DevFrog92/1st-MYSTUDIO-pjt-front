@@ -23,14 +23,18 @@
             <div class="content">
               <b-btn  @click="btnClick(image)" v-b-modal.modal-lg>{{image.username}}</b-btn>
             </div>
+            
               
           </div>
         </Stack-item>
       </Stack>
+
+
       <div v-if="temp">
-        <b-modal tabindex="-1" id="modal-lg" size="lg" centered :title="temp.movie_title">
+        <b-modal tabindex="-1" id="modal-lg" size="lg" centered :title="temp.movie_title" >
             <b-card no-body class="overflow-hidden" style="max-width: 100%;">
-              <b-row no-gutters>
+              
+              <b-row no-gutters >
                 <b-embed
                   type="iframe"
                   aspect="16by9"
@@ -43,7 +47,8 @@
               <b-row>
                 <ul>
                   <li v-for="(movie_review,idx) in movie_reviews" :key='idx'>
-                    <b-card :title="movie_review.auth" >
+                    <!-- 가져가지 마세요!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
+                    <h2 style="font-family: 'Noto Sans', sans-serif; font-size:10px;">{{movie.title}}</h2>
                     <b-card-text>
                       <p>{{movie_review.content}}</p>
                     </b-card-text>
@@ -53,34 +58,45 @@
                     </b-card-text>
                     <a href="#" class="card-link">Card link</a>
                     <b-link href="#" class="card-link">Another link</b-link>
-                  </b-card>
+              
                     </li>
                 </ul>
               </b-row>
+
+          
             </b-card>
         </b-modal>
 
-        <b-modal tabindex="-1" id="modal-xl" size="xl" centered :title="temp.movie_title">
+
+        <b-modal tabindex="-1" id="modal-xl" size="lg" centered :title="temp.movie_title">
             <b-card no-body class="overflow-hidden" style="max-width: 100%;">
+              <div style=" font-family:'Noto Sans', sans-serif; text-transform: uppercase;">
               <b-row no-gutters>
-                <b-col md="4">
-                  <b-card-img :src="temp.poster_path" alt="Image" class="rounded-0" id='cardimg'></b-card-img>
-                </b-col>
+                    <div class="m-0 pt-4" style="height:70px; width:100%; text-align:center; font-size:22px; font-weight:bold; text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black; color:white;" >{{temp.username}}의  '{{temp.movie_title}}'  REVIEW</div>
+                <!-- <b-col md="4"> -->
+                  <div class="d-flex ">
+                    <div style="display:inline-block;">
+                  <b-card-img :src="temp.poster_path" alt="Image" class="rounded-0" id='cardimg' style="width:180px; margin:8px 25px;  "></b-card-img>
+                    </div>
+
+                    <div style="display:inline-block; margin-top:40px"  >
+                     <span style="font-size:16px; ">STAR RANK : </span><b-icon-star-fill style="color:yellow; font-size:25px; "></b-icon-star-fill><span style="text-transform:none; "> x {{temp.rank}} </span> 
+                      <br>
+                      <h6 style="font-size:16px; margin-top:25px;">REVIEW</h6>
+                      <h6 style="text-indent:10px; font-size:19px; font-weight:bold;">{{temp.content}}</h6>
+                      <br>
+                      <p  @click="likeReview(temp)" style="color:#6A16CD; font-size:20px; margin-top:20px;cursor:pointer;"><b-icon-heart-fill></b-icon-heart-fill> <span style="color:black; font-size:15px; font-weight:bold; "> {{count}} 명이 이 글을 좋아합니다.</span></p>
+                      <h6 style="font-size:14px; margin-top:5px; ;">posting date : {{temp.created_at}}</h6>
+                      
+                    </div>
+                <!-- </b-col> -->
+                  </div>
                 <b-col md="8">
                   <div class="m-3 ">
-                    <div class="d-flex justify-content-between mb-3">
-                    <h2 class="m-0">{{temp.movie_title}} <span>{{temp.rank}}</span> </h2>
-                    <h5 class="m-0 pt-3" >Written by : {{temp.username}}</h5>
-                    </div>
-                    <b-card-text >
-                      <p>{{temp.content}}</p>
-                      <div class="d-flex justify-content-end">
-                      <p style="margin-right:0;">Reporting date : {{temp.created_at}}</p>
-                      </div>
-                    </b-card-text>
-                    <hr>
+                  
+                    
                     <div class="d-flex justify-content-between"><b-form-input style="width:85%;height:50px;" @keypress.enter="createComment(temp)" v-model="comment"></b-form-input><b-button class="p-1" @click="createComment(temp)">Submit</b-button></div>
-                    <hr>
+                    
                       <div v-if="updating">
                     <ol>
                       <li v-for="(comment,idx) in comment_list" :key='idx'>
@@ -98,13 +114,17 @@
                     </ol>
                       </div>
                       <div v-else>
-                      <div class="d-flex justify-content-between"><b-form-input v-model='comment_update' style="width:85%;height:50px;" @keypress.enter="updateComment(comment)"></b-form-input><b-button class="p-1" @click="updateComment(comment)">Submit</b-button></div>  
+                           <!-- <div class="d-flex justify-content-end mr-1">
+          <button style="margin-top:20px;  margin-right:10px; display:block; " class="btn6_side" @click="findMovie(title)">FIND</button>
+        </div> -->
+                      <div class="d-flex justify-content-between"><b-form-input v-model='comment_update' style="width:85%;height:50px;" @keypress.enter="updateComment(comment)"></b-form-input><button class="p-1 btn6_side" @click="updateComment(comment)">Submit</button></div>  
                       </div>
                   </div>
                 </b-col>
-              <p><b-btn class="p-1" @click="likeReview(temp)">좋아요</b-btn> {{count}} 명이 이 글을 좋아합니다.</p>
               </b-row>
-              <star-rating :config="config"></star-rating>
+              </div>
+
+              <!-- <star-rating :config="config"></star-rating> -->
             </b-card>
 
           </b-modal>
