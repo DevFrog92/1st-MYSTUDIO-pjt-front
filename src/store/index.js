@@ -1,5 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import createPersistedState from "vuex-persistedstate";
+
 Vue.use(Vuex)
 
 export default new Vuex.Store({
@@ -12,6 +14,9 @@ export default new Vuex.Store({
     recommand : [],
     genre_name:[]
   },
+  plugins:[
+    createPersistedState()
+  ],
   mutations: {
     LOGIN(state,username){
       console.log('변경한다')

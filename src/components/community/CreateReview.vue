@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <b-container fluid style="width:60%;margin-top:9rem">
   <div id='body_CR' style='margin-top:3rem;'>
 
       <b-button v-b-toggle.sidebar-right class="btn6_search" style="border-radius: 0; background-color:transparent; font-size:12px; font-weight:bold;">Search Movie</b-button>
@@ -48,30 +48,30 @@
     
       <div class="form__group field">
         <input type="text" class="form__field" v-model="content" placeholder="content" name="content" id='content' required />
-        <label for="content" class="form__label">한줄평</label>
+        <label for="content" class="form__label">REVIEW</label>
       </div>
       <div class="form__group field">
         <input type="text" class="form__field" v-model="movie_title" placeholder="movie_title" name="movie_title" id='movie_title' required />
-        <label for="movie_title" class="form__label">movie_title</label>
+        <label for="movie_title" class="form__label">MOVIE TITLE</label>
       </div>
       <div class="form__group field">
         <input type="text" class="form__field" v-model="poster" placeholder="poster" name="content" id='content' required />
-        <label for="content" class="form__label">포스터 경로</label>
+        <label for="content" class="form__label">POSTER</label>
       </div>
       <div class="form__group field" >
         <input type="number" class="form__field" v-model="rank" min="1" max="5" placeholder="number" name="number" id='number' required />
-        <label for="number" class="form__label">평점</label>
+        <label for="number" class="form__label">SCORE</label>
       </div>
       <div class="form__group field">
         <input type="text" class="form__field" v-model="movie_id" placeholder="movie_id" name="content" id='content' required />
-        <label for="content" class="form__label">영화 아이디</label>
+        <label for="content" class="form__label">MOVIE ID</label>
       </div>
   
     <div class="d-flex justify-content-end ">
       <button id="a" style="text-decoration:none; background-color:transparent; color:white; width:100px; margin-top:4rem; display:block;" @click="sendImage" class="btn6">  Submit  </button>
     </div>
   </div>
-  </div>
+  </b-container>
 </template>
 
 <script>

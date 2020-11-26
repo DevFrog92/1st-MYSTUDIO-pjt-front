@@ -80,7 +80,13 @@
             <b-card no-body class="overflow-hidden " style="max-width: 100%;">
               <div style=" font-family:'Noto Sans', sans-serif; text-transform: uppercase;">
               <b-row no-gutters>
-                    <div class="m-0 pt-4" style="height:70px; width:100%; text-align:center; font-size:22px; font-weight:bold; text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black; color:white; letter-spacing:1.5px;" >{{temp.username}}의  '{{temp.movie_title}}'  REVIEW</div>
+                    <div class="m-0 pt-4" style="height:70px; width:100%; text-align:center; font-size:22px; font-weight:bold; text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black; color:white; letter-spacing:1.5px;" >
+                      {{temp.username}}의  '{{temp.movie_title}}' REVIEW
+                      <span v-if="this.$store.state.auth.username === temp.username">
+                      <button class="btn6_sele3" style="margin-left:5px;" @click="updateReview(temp)">EDIT</button>
+                      <button class="btn6_sele3" @click="deleteReview(temp)">DELETE</button>
+                      </span>
+                      </div>
                 <!-- <b-col md="4"> -->
                   <div class="d-flex ">
                     <div style="display:inline-block;">
@@ -356,7 +362,17 @@ export default {
       })
     },
     updateReview(temp){
-      this.$router.push({name:'UpdateReview',params: {review:temp}})
+      console.log(temp,'update')
+      this.$router.push({name:'UpdateReview',params:{temp}})
+    },
+    deleteReview(temp){
+      const config = this.setToken()
+      axios.delete(`http://127.0.0.1:8000/community/${temp.id}/`,config)
+      .then(res=>{
+        console.log(res.data)
+        this.$router.go()
+      })
+      
     }
   },
   created(){

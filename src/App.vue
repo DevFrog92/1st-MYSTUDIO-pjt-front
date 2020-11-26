@@ -12,7 +12,6 @@
             
           <span v-if="login">
           <b-row>
-            <b-nav-item style="margin:0 2px;" to="/movierecommaned">MovieRecommaned</b-nav-item>
             <b-nav-item style="margin:0 5px;" to="/movielist">MOVIELIST</b-nav-item>
             <b-nav-item style="margin:0 5px;" to="/community">COMMUNITY</b-nav-item>
             <b-nav-item style="margin:0 5px;" to="/profile">MY PAGE</b-nav-item>
