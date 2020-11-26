@@ -1,8 +1,8 @@
 <template>
   <div v-if="popular_movie_list.length" id='MovieList' style="background-color:black;">
     <h1 id="head">
-      <span  @click="current" class="btn_ML third">Current Popular Movies</span>
-      <span  @click="newly" class="btn_ML third">Newly Created Movie</span>
+      <span  @click="current" class="btn_ML third">Popular Movies</span>
+      <span  @click="newly" class="btn_ML third">Newly Movies</span>
       <span  @click="now" class="btn_ML third">Movies In Theatres</span>
       </h1>
     

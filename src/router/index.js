@@ -10,6 +10,7 @@ import Login from '@/views/accounts/Login'
 import LoadMap from '@/views/profile/LoadMap'
 import UpdateProfile from '@/views/profile/UpdateProfile'
 import Profile from '@/views/profile/Profile'
+import BestThreeMovies from '@/views/profile/BestThreeMovies'
 import MovieList from '@/views/movie/MovieList'
 import MovieRecommaned from '@/components/movies/MovieRecommaned'
 Vue.use(VueRouter)
@@ -19,6 +20,11 @@ const routes = [
     path:'/profile',
     name:'Profile',
     component:Profile
+  },
+  {
+    path:'/bestthreemovies',
+    name:'BestThreeMovies',
+    component:BestThreeMovies
   },
   {
     path:'/map',
