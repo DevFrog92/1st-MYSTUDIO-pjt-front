@@ -1,9 +1,6 @@
 <template>
 
   <div class="top-div">
-    <div>
-      <img src="http://127.0.0.1:8000/api/Logo/Logo.png" width="20%" alt="Logo">
-    </div>
     <div class="box_login">
       <form>
         <span class="text-center">login</span>

@@ -4,20 +4,21 @@
       <b-navbar toggleable type="dark" style="background-color:black;" id="nav" >
         <b-navbar-brand href="#" to='/movielist' id="nav-head" ><img src="http://127.0.0.1:8000/api/logo/logo.png" alt="logo" style="float:left;" width="20%"></b-navbar-brand>
           <b-navbar-nav class="ml-auto mr-4">
+            
           <span v-if="login">
-          <b-row >
-            <b-nav-item style="margin:0 2px;" to="/map">RoadMap</b-nav-item>
+          <b-row>
+            <b-nav-item style="margin:0 2px; " to="/map">RoadMap</b-nav-item>
             <b-nav-item style="margin:0 2px;" to="/movierecommaned">MovieRecommaned</b-nav-item>
-            <b-nav-item style="margin:0 5px;" to="/movielist">MovieList</b-nav-item>
-            <b-nav-item style="margin:0 5px;" to="/community">Community</b-nav-item>
-            <b-nav-item style="margin:0 5px;" to="/profile">Profile</b-nav-item>
-            <b-nav-item style="margin:0 5px;" @click="logout">logout</b-nav-item>
+            <b-nav-item style="margin:0 5px;" to="/movielist">MOVIELIST</b-nav-item>
+            <b-nav-item style="margin:0 5px;" to="/community">COMMUNITY</b-nav-item>
+            <b-nav-item style="margin:0 5px;" to="/profile">MY PAGE</b-nav-item>
+            <b-nav-item style="margin:0 5px; f" @click="logout">LOGOUT</b-nav-item>
           </b-row>
         </span>
           </b-navbar-nav>
   </b-navbar>
       </div>      
-      <router-view :key="$route.fullPath" @login='login=true' />  
+      <router-view @login='login=true'/>  
   </div>
 </template>
 
@@ -65,17 +66,14 @@ export default {
 
 <style>
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: bold;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
 }
 
-template {
-  background-color: black;
-
-}
 
 #nav-head {
   font-weight: bold;
@@ -84,13 +82,10 @@ template {
   font-size: 30px;
 }
 
-#navbar-toggle-collapse{
-  font-weight: bold;
-  color: white;
-  font-size: 20px;
-}
+
 
 #nav a.router-link-exact-active {
-  color: #42b983;
+  color: #6A16CD;
 }
+
 </style>

@@ -140,6 +140,7 @@ export default {
     }
   },
   methods:{
+    
      getMovieReview(movie){
       const key = 'e37c0ae71977e8ad20b5a3f6caa339a1'
       const movie_id = movie.id

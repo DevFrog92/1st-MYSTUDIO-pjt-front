@@ -204,11 +204,13 @@ export default {
     border: none;
     box-shadow: 0 0 0 3px transparent inset;
     color:white;
+    font-size:20px;
+    text-shadow: -1px 0 #6A16CD, 0 1px #6A16CD, 1px 0 #6A16CD, 0 -1px #6A16CD;
     margin-top: 3px;
     position: relative;
     cursor: pointer;
-    
 }
+
 
 .outline-button::before, .outline-button::after {
     content: "";
