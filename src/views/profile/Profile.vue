@@ -2,25 +2,36 @@
   <b-container fluid style="width:80%" class="p-0 profile"> 
 <div>
   <div>
-    <div style="padding-top:5rem; " class="mt-5" >
+    <div style="padding-top:7rem; " class="mt-5" >
         <div class="d-flex justify-content-start">
-          <div style="margin-right:300px;">
+          <div style="">
         <a v-b-toggle.sidebar-right class="cta" style="text-decoration:none; color:white; cursor: pointer; background-color:black;">
           <span>+ MY PROFILE</span></a>
           </div>
+
+
+
+        <div v-if="profile.genre">
           <div class="sign" id="head_title" v-if="state_of_fav">
         <span class="fast-flicker">f</span>avo<span class="flicker">r</span>ite
           </div>
           <div class="sign" id="head_title" v-else>
         <span class="fast-flicker">b</span>est<span class="flicker">m</span>ovie
           </div>
+        </div>
+        <div v-else>
+      <h2 style="margin:200px auto; font-family: 'Noto Sans', sans-serif; font-weight:bold; color:white;">MY PROFILE을 등록하시면 나만의 영화 PAGE를 만들 수 있습니다.</h2>
+    </div>
           
 
         </div>
         <b-sidebar id="sidebar-right" bg-variant="" right shadow width="450px" z-index="1" backdrop style="color:white background-color:black;">
           
+            <div style="float:right; display:block;">
+              <button class="btn6_sele2"  @click="edit(profile)">Update Profile</button>
+            </div>
           <div class="px-3 py-2">
-          <div class="d-flex justify-content-center pt-5">
+          <div class="pt-5">
             <div class="profile_wrapper" > 
               <div class="gradation_animate"></div> 
               <div class="image_wrapper"> 
@@ -29,12 +40,10 @@
             </div>
           </div>
 
-            <div style="float:right; display:block;">
-              <button class="btn6_sele2"  @click="edit(profile)">Update Profile</button>
-            </div>
             
 
-            <div style="display:block; margin-top:60px; color:#6A16CD; text-shadow: -1px 0 white, 0 1px white, 1px 0 white, 0 -1px white;">
+           
+            <div style="display:block; margin-top:20px; color:purple; text-shadow: -1px 0 #690fcf91, 0 1px #690fcf91, 1px 0 #690fcf91, 0 -1px #690fcf91;">
             <span style="display:inline; font-size:28px;">{{profile.nickname}} </span><p style="display:inline; font-size:23px;">({{profile.username}})</p>
             </div>
 
@@ -48,7 +57,7 @@
             <div style="display:block; margin-top:22px">
             <span style="display:inline; color:white; float:left; margin-left:20px; font-size:21px;">MY FAVORITE GENRE</span>
             <br>
-            <p style="display:block; color:white; font-size:17px; margin-top:10px;">{{genre}}</p>
+            <p style="display:block; color:white; font-size:17px; margin-top:10px;" class="txt_post">{{genre}}</p>
             </div>
             <div>
               <div class="btn_new" @click="goMovieRecommaned">
@@ -105,54 +114,16 @@
 
 
 
-  <div v-if="best_movies.best_movie_title_1 !== null || best_movies.best_movie_title_2 !== null || best_movies.best_movie_title_3 !== null" >
     
-    <div v-if="state_of_fav">
+  <div v-if="best_movies.best_movie_title_1 !== null || best_movies.best_movie_title_2 !== null || best_movies.best_movie_title_3 !== null" >
+    <div v-if="state_of_fav ">
     <FavoriteMovies />
     </div>
     <div v-else>
     <BestThreeMovies />
     </div>
-<!-- <div id="movie_card" v-for="(movie,idx) in best_movies" :key="idx">
-
-<div class="movie_card" id="bright">
-  <div class="info_section">
-    <div class="movie_header">
-      <img class="locandina" :src="'https://image.tmdb.org/t/p/w500'+movie.poster_path"/>
-      <h1>{{movie.title}}</h1>
-      <h4>2017, David Ayer</h4>
-      <span class="minutes">117 min</span>
-      <p class="type">Action, Crime, Fantasy</p>
-    </div>
-    <div class="movie_desc">
-      <p class="text">
-        Set in a world where fantasy creatures live side by side with humans. A human cop is forced to work with an Orc to find a weapon everyone is prepared to kill for. 
-      </p>
-    </div>
-    <div class="movie_social">
-      <ul>
-        <li><i class="material-icons">share</i></li>
-        <li><i class="material-icons"></i></li>
-        <li><i class="material-icons">chat_bubble</i></li>
-      </ul>
-    </div>
   </div>
-  <div class="blur_back" :style="{ 'background-image': 'url(' + 'https://image.tmdb.org/t/p/w500'+movie.poster_path + ')' }" style="background-size: 50%;" ></div>
-</div>
-</div> -->
-
-
-
-
-
-
-
-
-
-  </div>
-  <div v-else>
-    <h2 style="margin:200px auto; font-family: 'Noto Sans', sans-serif; font-weight:bold; color:white;">MY PROFILE을 등록하시면 나만의 영화 PAGE를 만들 수 있습니다.</h2>
-  </div>
+  
 </div>
 
     </b-container>
@@ -287,7 +258,8 @@ export default {
       this.getProfile()
     }else{
       alert('로그인한 회원만 접근할 수 있습니다.')
-      this.$router.push({name:'Home'})
+      this.$router.push({name:'Login'})
+      
     }
   }
 }
@@ -295,11 +267,11 @@ export default {
 
 <style scoped>
 sidebar-body{
-  background-color:black;
+  /* background-color:black; */
 }
 .profile{
   font-family: 'Noto Sans', sans-serif;
-  text-transform: uppercase;
+  /* text-transform: uppercase; */
 }
 
 .row {
@@ -365,9 +337,9 @@ sidebar-body{
 
 .profile_wrapper {
   float: left; 
-  width: 300px; 
-  height: 300px; 
-  margin: 40px 0px 0 80px; 
+  width: 250px; 
+  height: 250px; 
+  margin: 25px 7rem 0px 7rem; 
   position: relative; 
 } 
 
@@ -375,8 +347,8 @@ sidebar-body{
   position: absolute;
   top: 0px; 
   left: 0px; 
-  width: 300px; 
-  height: 300px; 
+  width: 200px; 
+  height: 200px; 
   border-radius: 50%; 
   background: url(http://127.0.0.1:8000/api/profile/purple300.png) no-repeat; 
   -webkit-animation:spin 2s infinite linear; 
@@ -393,8 +365,8 @@ sidebar-body{
 .image_wrapper { 
     position: relative; 
     overflow: hidden; 
-    width: 290px; 
-    height: 290px; 
+    width: 190px; 
+    height: 190px; 
     border-radius: 50%; 
     top: 3px; 
     left: 3px; 
@@ -414,15 +386,16 @@ sidebar-body{
 
 .btn6_sele2, .btn6_sele2:link, .btn6_sele2:visited {
     padding: 10px 0;
-    width:180px;
+    margin-top: 4rem;
+    width:200px;
     height:40px;
     font-family: 'Noto Sans', sans-serif;
     border: transparent;
     background:transparent;
-    color: grey;
+    color:purple;
     font-weight:bold;
     text-transform: uppercase;
-    font-size: 18px;
+    font-size: 20px;
     letter-spacing: 0.5px;
     transition: all .2s ease-in-out;
 }
@@ -861,6 +834,22 @@ button {
         opacity: 1;
     }
 }
+
+
+ .txt_post {
+    padding: 1rem;
+    width: 90%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 1; /* 라인수 */
+    -webkit-box-orient: vertical;
+    word-wrap:break-word; 
+    line-height: 1.2em;
+    /* height: 1.2rem;  */
+    text-align: left;
+  }
+
 
 
 

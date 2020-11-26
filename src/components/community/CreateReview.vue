@@ -141,7 +141,8 @@ export default {
     const token = localStorage.getItem('jwt')
     if (!token){
        alert('로그인한 회원만 접근할 수 있습니다.')
-      this.$router.push({name:'Home'})
+      this.$router.push({name:'Login'})
+      
     }
   }
 } 

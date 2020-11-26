@@ -1,6 +1,7 @@
 <template>
 <div v-if="best_movies.first !== null || best_movies.second !== null || best_movies.third !== null" >
   <div id="movie_card" v-for="(movie,idx) in best_movies" :key="idx">
+  <div v-if="movie">
 <div class="movie_card" id="bright" @click="OnClick(movie)">
   <div class="info_section">
     <div class="movie_header">
@@ -10,7 +11,7 @@
             <span class="minutes d-inline" style="margin-top:1px">
         <img  :src="'https://image.tmdb.org/t/p/original'+movie.production_companies[0].logo_path" width="20%" alt="">
         </span>
-      <p class="type">{{movie.production_companies[0].name}}</p>
+      <p class="type">{{movie.production_companies[0].name}}{{movie.poster_path}}</p>
     </div>
     <div class="movie_desc mt-5">
       <p class="txt_post ">
@@ -18,12 +19,10 @@
       </p>
     </div>
     <div class="movie_social">
-      <ul>
-        
-      </ul>
     </div>
-  </div>
+</div>
   <div class="blur_back" :style="{ 'background-image': 'url(' + movie.poster_path + ')' }" style="background-size: 50%;" ></div>
+  </div>
 </div>
 </div>
 </div>
@@ -129,7 +128,8 @@ export default {
       this.getProfile()
     }else{
       alert('로그인한 회원만 접근할 수 있습니다.')
-      this.$router.push({name:'Home'})
+      this.$router.push({name:'Login'})
+      
     }
   }
 

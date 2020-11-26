@@ -56,39 +56,29 @@
         </Stack-item>
       </Stack>
       <div v-if="temp">
-        <b-modal  tabindex="-1" id="modal-lg" size="lg" centered :title="temp.movie_title">
-            <b-card no-body class="overflow-hidden" style="max-width: 100%;">
-              <b-row no-gutters>
+        <b-modal  tabindex="-1" id="modal-lg" size="lg" centered :title="temp.title">
                 <b-embed
                   type="iframe"
                   aspect="16by9"
                   :src="video_url"
                   allowfullscreen>
-                  </b-embed>  
-              <p><b-btn class="p-1 m-4" @click="likeReview(temp)">
-                  <div v-if="liked">
-            <b-icon-heart-fill></b-icon-heart-fill>
-            </div>
-            <div v-else>
-            <b-icon-heart></b-icon-heart>
-
-            </div>
-                </b-btn> {{count}} 명이 이 글을 좋아합니다.</p>
-              </b-row>
+                  </b-embed> 
+                  <b-btn @click="onTitleClick(temp)">Go to detail</b-btn> 
+            <b-card no-body class="overflow-hidden" style="max-width: 100%;" >
+          
               <hr>
-              <b-row>
+              <b-row >
                 <ul>
-                  <li v-for="(movie_review,idx) in movie_reviews" :key='idx'>
+  
+                  <li v-for="(movie_review,idx) in movie_reviews" :key='idx' p class="px-2">
                     <b-card :title="movie_review.auth" >
                     <b-card-text>
-                      <p>{{movie_review.content}}</p>
+                      <p class='txt_post' style="text-align:justify;" >{{movie_review.content}}</p>
                     </b-card-text>
-                    <b-card-text>
-                      {{movie_review.author_details.rating}}
+                    <b-card-text class="mt-2">
+                      <span style="font-size:16px; ">STAR RANK : </span><b-icon-star-fill style="color:#6A16CD; font-size:25px; "></b-icon-star-fill><span style="text-transform:none; "> x {{movie_review.author_details.rating}} </span>
                       <p>Reporting date : {{movie_review.created_at}}</p>
                     </b-card-text>
-                    <a href="#" class="card-link">Card link</a>
-                    <b-link href="#" class="card-link">Another link</b-link>
                   </b-card>
                     </li>
                 </ul>
@@ -154,6 +144,13 @@ export default {
     }
   },
   methods:{
+    onTitleClick(movie){
+        const item = {
+          ...movie,
+          poster_path:'https://image.tmdb.org/t/p/w500' + movie.poster_path
+        }
+        this.$router.push({name:'MovieDetail',params:{movie:item,page:'Best'}})
+    },
     getVideos(temp){
       this.video_url = 'https://www.youtube.com/embed/'
       const key = 'e37c0ae71977e8ad20b5a3f6caa339a1'
@@ -354,7 +351,8 @@ export default {
     console.log(this.show_movie_list,'dddd')
     }else{
       alert('로그인한 회원만 접근할 수 있습니다.')
-     this.$router.push({name:'Home'})
+      this.$router.push({name:'Login'})
+     
 
     }
   }
@@ -615,5 +613,16 @@ button {
     padding: 10px;
 }
 
+
+.txt_post {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 3; /* 라인수 */
+    -webkit-box-orient: vertical;
+    word-wrap:break-word; 
+    line-height: 1.2em;
+    height: 3.6em; /* line-height 가 1.2em 이고 3라인을 자르기 때문에 height는 1.2em * 3 = 3.6em */
+  }
 
 </style>

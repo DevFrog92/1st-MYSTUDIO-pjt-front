@@ -114,6 +114,7 @@ export default {
     if (token){
       this.getList()
       this.show_movie_list = this.popular_movie_list
+      console.log(this.$router.state.auth)
       }
     else{
        alert('로그인한 회원만 접근할 수 있습니다.')

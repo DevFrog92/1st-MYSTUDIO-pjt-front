@@ -242,7 +242,8 @@ export default {
       console.log('로그인한 유저')
     }else{
       alert('로그인한 회원만 접근할 수 있습니다.')
-      this.$router.push({name:'Home'})
+            this.$router.push({name:'Login'})
+
     }
   }
 

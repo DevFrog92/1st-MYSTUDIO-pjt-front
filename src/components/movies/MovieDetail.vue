@@ -85,21 +85,19 @@
         </div>
       </div>
 <b-modal tabindex="-1" id="modal-lg" size="lg" centered :title="movie.title">
-            <b-card no-body class="overflow-hidden" style="max-width: 100%;">
-              <b-row no-gutters>
-              
-              </b-row>
+            <b-card no-body class="overflow-hidden bg-dark" style="max-width: 100%;" >
+          
               <hr>
-              <b-row>
+              <b-row >
                 <ul>
   
                   <li v-for="(movie_review,idx) in movie_reviews" :key='idx' p class="px-2">
-                    <b-card :title="movie_review.auth" >
+                    <b-card :title="movie_review.auth" class="bg-dark text-white" >
                     <b-card-text>
-                      <p style="text-align:justify;" >{{movie_review.content}}</p>
+                      <p class='txt_post' style="text-align:justify;" >{{movie_review.content}}</p>
                     </b-card-text>
                     <b-card-text class="mt-2">
-                      <p>Rating :  {{movie_review.author_details.rating}}</p>
+                      <span style="font-size:16px; ">STAR RANK : </span><b-icon-star-fill style="color:yellow; font-size:25px; "></b-icon-star-fill><span style="text-transform:none; "> x {{movie_review.author_details.rating}} </span>
                       <p>Reporting date : {{movie_review.created_at}}</p>
                     </b-card-text>
                   </b-card>
@@ -266,7 +264,8 @@ export default {
     
     }else{
       alert('로그인한 회원만 접근할 수 있습니다.')
-     this.$router.push({name:'Home'})
+      this.$router.push({name:'Login'})
+     
 
     }
   }
@@ -468,4 +467,15 @@ a span:nth-child(4) {
   bottom: 0;
   
 }
+
+.txt_post {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 3; /* 라인수 */
+    -webkit-box-orient: vertical;
+    word-wrap:break-word; 
+    line-height: 1.2em;
+    height: 3.6em; /* line-height 가 1.2em 이고 3라인을 자르기 때문에 height는 1.2em * 3 = 3.6em */
+  }
 </style>

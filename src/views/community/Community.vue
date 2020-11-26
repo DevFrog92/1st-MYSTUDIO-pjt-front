@@ -41,13 +41,14 @@
                   :src="video_url"
                   allowfullscreen>
                   </b-embed>  
+                  <b-btn class='bg-warning' style="height:40%;margin-top:2%;" @click="OnClick(temp)">Go to detail</b-btn>
               <p @click="likeReview(temp)" style="color:#6A16CD; font-size:20px; margin-top:20px;cursor:pointer; margin-left:15px">
                         <span v-if="liked" class="mr-1">
                         <b-icon-heart-fill></b-icon-heart-fill> 
 
                         </span>
                         <span v-else class="mr-1" >
-                        <b-icon-heart></b-icon-heart> 
+                        <b-icon-heart ></b-icon-heart> 
 
                         </span>
                         <span style="color:black; font-size:15px; font-weight:bold; color:white;"> {{count}} 명이 이 글을 좋아합니다.</span>
@@ -62,9 +63,10 @@
                       <p class="txt_post" style="width:97%;text-align:justify;">{{movie_review.content}}</p>
                     </b-card-text>
                     <b-card-text >
-                      <span style="font-size:16px; ">STAR RANK : </span><span style="text-transform:none; ">{{movie_review.author_details.rating}} x <b-icon-star-fill style="color:yellow; font-size:25px; "></b-icon-star-fill> </span>
+                      <span style="font-size:16px; ">STAR RANK : </span><b-icon-star-fill style="color:yellow; font-size:25px; "></b-icon-star-fill><span style="text-transform:none; "> x {{movie_review.author_details.rating}} </span>
                       
                       <p>Reporting date : {{movie_review.created_at}}</p>
+                      <p>Editing date : {{movie_review.updated_at}}</p>
                     </b-card-text>
               
                     </li>
@@ -90,11 +92,11 @@
                 <!-- <b-col md="4"> -->
                   <div class="d-flex ">
                     <div style="display:inline-block;">
-                  <b-card-img :src="temp.poster_path" alt="Image" class="rounded-0" id='cardimg' style="width:180px; margin:8px 25px;  "></b-card-img>
+                  <b-card-img  :src="temp.poster_path" alt="Image" class="rounded-0" id='cardimg' style="width:180px; margin:8px 25px;  "></b-card-img>
                     </div>
 
                     <div style="display:inline-block; margin-top:40px"  >
-                     <span style="font-size:16px; ">STAR RANK : </span><b-icon-star-fill style="color:yellow; font-size:25px; "></b-icon-star-fill><span style="text-transform:none; "> x {{temp.rank}} </span> 
+                     <span style="font-size:16px; ">STAR RANK : </span><b-icon-star-fill style="color:#6A16CD; font-size:25px; "></b-icon-star-fill><span style="text-transform:none; "> x {{temp.rank}} </span> 
                       <br>
                       <h6 style="font-size:16px; margin-top:25px;">REVIEW</h6>
                       <h6 style="text-indent:10px; font-size:19px; font-weight:bold;">{{temp.content}}</h6>
@@ -110,7 +112,8 @@
                         </span>
                         <span style="color:black; font-size:15px; font-weight:bold; "> {{count}} 명이 이 글을 좋아합니다.</span>
                         </p>
-                      <h6 style="font-size:14px; margin-top:5px; ;">posting date : {{temp.created_at}}</h6>
+                      <h6 style="font-size:12px; margin-top:3px; ;">posting date : {{temp.created_at}}</h6>
+                      <h6 style="font-size:12px; margin-top:3px; ;">editing date : {{temp.updated_at}}</h6>
                       
                     </div>
                 <!-- </b-col> -->
@@ -121,7 +124,7 @@
                     
                       <div style=" margin-left: 55px; margin-top:10px;">
                       <h6 style="font-size:15px; font-weight:bold; color:#6A16CD;"><b-icon-chat-right-dots></b-icon-chat-right-dots> comment</h6></div>
-                      <input v-model='comment' type="text" class="choose" style="width:550px;height:40px; margin-left:75px;"  @keypress.enter="createComment(temp)"><button class="p-1 btn6_side2"  @click="createComment(comment)">Submit</button>  
+                      <input v-model='comment' type="text" class="choose" style="width:550px;height:40px; margin-left:75px;"  @keypress.enter="createComment(temp)"><button class="p-1 btn6_side2"  @click="createComment(temp)">Submit</button>  
                       
                     
                     
@@ -132,7 +135,10 @@
                       <li v-for="(comment,idx) in comment_list" :key='idx'>
                          
                           <div>
-                          <p class="mb-0 d-inline"> <b-icon-arrow-return-right style="color:#6A16CD; font-weight:bold; font-size:20px;"></b-icon-arrow-return-right><span style="font-size:13px; margin-left:7px;"> created at : {{comment.created_at}}</span></p>
+                          <p class="mb-0 d-inline"> <b-icon-arrow-return-right style="color:#6A16CD; font-weight:bold; font-size:20px;"></b-icon-arrow-return-right>
+                          <span style="font-size:12px; margin-left:7px;"> created at : {{comment.created_at}} </span>
+                          <span style="font-size:12px; margin-left:7px;"> updated at : {{comment.updated_at}} </span>
+                          </p>
                           <button class="btn6_sele3" style="margin-left:5px;" @click="commentUpdate(comment)">EDIT</button>
                           <button class="btn6_sele3" @click="commentDelete(comment)">DELETE</button>
                           </div>
@@ -188,7 +194,8 @@ export default {
                 starWidth: 30,
                 starHeight: 30
             }
-        }
+        },
+        profile:null,
 
    }
   },
@@ -197,25 +204,53 @@ export default {
     StackItem,
   },
   methods:{
+    getProfile(){
+      this.state_of_fav = this.fav_state
+      const config = this.setToken()
+      axios.get('http://127.0.0.1:8000/community/profile/',config)
+      .then(res=>{
+        console.log(res.data.results,'ddddddddddddd')
+      this.readProfile()
+
+      })
+
+    },
+    readProfile(){
+      const config = this.setToken()
+      axios.post('http://127.0.0.1:8000/community/profile/',{},config)
+      .then(res=>{
+        console.log(res,'ffffffffffffffffffffffffffffff')
+        this.profile = res.data
+        console.log(this.profile)
+      })
+    },
+    OnClick(movie){
+      console.log(movie.poster_path)
+        this.$router.push({name:'MovieDetail',params:{movie:movie,page:'Best'}})
+      },
     updateComment(comment){
       console.log(comment)
       const config = this.setToken()
       const commentItem = new FormData()
       commentItem.append('content',this.comment_update)
-      axios.put(`http://127.0.0.1:8000/community/review/${this.temp_comment_id}/delete_update_comment/`,commentItem,config)
+        axios.put(`http://127.0.0.1:8000/community/review/${this.temp_comment_id}/delete_update_comment/`,commentItem,config)
       .then(()=>{
         this.readComment(this.temp)
         this.comment = ''
         this.updating = true
-        
       })
+      
     },
     commentUpdate(comment){
       console.log(comment)
       console.log('upatecomment')
+      if(comment.username === this.$store.state.auth.username){
       this.temp_comment_id = comment.id
       this.comment_update = comment.content
       this.updating = false
+      }else{
+        alert('타인의 글은 수정 및 삭제할 수 없습니다.')
+      }
     },
     setToken(){
       const token = localStorage.getItem('jwt')
@@ -237,11 +272,15 @@ export default {
     },
     commentDelete(comment){
       const config = this.setToken()
+      if(comment.username === this.$store.state.auth.username){
       axios.delete(`http://127.0.0.1:8000/community/review/${comment.id}/delete_update_comment/`,config)
       .then(res=>{
         console.log(res.data)
         this.readComment(this.temp)
       })
+      }else{
+        alert('타인의 글은 수정 및 삭제할 수 없습니다.')
+      }
     },
     readComment(temp){
       const config = this.setToken()
@@ -251,7 +290,8 @@ export default {
         this.comment_list = this.comment_list.map(comment=>{
           const item = {
             ...comment,
-            created_at : comment.created_at.slice(0,10)
+            created_at : comment.created_at.slice(0,10),
+            updated_at : comment.updated_at.slice(0,10)
           }
           return item
         })
@@ -322,7 +362,7 @@ export default {
         this.movie_reviews = this.movie_reviews.map(review=>{
           const item = {
             ...review,
-            created_at: review.created_at.slice(0,10)
+            created_at: review.created_at.slice(0,10),
           }
           return item
         })
@@ -354,7 +394,8 @@ export default {
           const resItm = {
             ...r,
             poster_path : 'https://image.tmdb.org/t/p/w500' + r.poster_path,
-            created_at : r.created_at.slice(0,10)
+            created_at : r.created_at.slice(0,10),
+            updated_at : r.created_at.slice(0,10)
           }
           this.reviews.push(resItm)
         }
@@ -379,9 +420,10 @@ export default {
     const token = localStorage.getItem('jwt')
     if (token){
     this.getReview()
+    this.getProfile()
     }else{
       alert('로그인한 회원만 접근할 수 있습니다.')
-      this.$router.push({name:'Home'})
+      this.$router.push({name:'Login'})
     }
   }
 }

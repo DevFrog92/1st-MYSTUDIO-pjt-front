@@ -46,19 +46,25 @@ export default {
         password1,
         password2
       }
-      console.log(userData)
-      if (password1 === password2){
-        axios.post('http://127.0.0.1:8000/rest-auth/registration/',userData)
-        .then(()=>{
-          this.$router.push({name:'Login'})
-        })
-        .catch(()=>{
-          alert('존재하는 계정입니다.')
-          this.$router.push({name:'Login'})
+      if (username==='' || password1 ==='' || password2===''){
+        alert('빈칸은 제출할 수 없습니다.')
+      }
+      else{
 
-        })
-      }else{
-        alert('작성된 비밀번호가 다릅니다.')
+        console.log(userData)
+        if (password1 === password2){
+          axios.post('http://127.0.0.1:8000/rest-auth/registration/',userData)
+          .then(()=>{
+            this.$router.push({name:'Login'})
+          })
+          .catch(()=>{
+            alert('존재하는 계정입니다.')
+            this.$router.push({name:'Login'})
+  
+          })
+        }else{
+          alert('작성된 비밀번호가 다릅니다.')
+        }
       }
     }
   },
@@ -79,7 +85,7 @@ export default {
 @import url('https://fonts.googleapis.com/css?family=Noto+Sans:400,400i,700,700i&subset=greek-ext');
 
 .top-div{
-	bbackground-image: url("http://127.0.0.1:8000/api/background.png");
+	background-image: url("http://127.0.0.1:8000/api/background.png");
 	background-position: center;
     background-origin: content-box;
     background-repeat: no-repeat;
