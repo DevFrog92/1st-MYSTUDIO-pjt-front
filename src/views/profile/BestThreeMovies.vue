@@ -1,30 +1,29 @@
 <template>
-<div>
-
+<div v-if="best_movies.first !== null || best_movies.second !== null || best_movies.third !== null" >
   <div id="movie_card" v-for="(movie,idx) in best_movies" :key="idx">
-<div class="movie_card" id="bright">
+<div class="movie_card" id="bright" @click="OnClick(movie)">
   <div class="info_section">
     <div class="movie_header">
-      <img class="locandina" :src="'https://image.tmdb.org/t/p/w500'+movie.poster_path"/>
-      <h1>{{movie.title}}</h1>
-      <h4>2017, David Ayer</h4>
-      <span class="minutes">117 min</span>
-      <p class="type">Action, Crime, Fantasy</p>
+      <img class="locandina mr-0" :src="movie.poster_path"/>
+      <h2 class="mb-3" style="font-weight:bold;">{{movie.title}}</h2>
+      <h5 class="mb-4">{{movie.release_date}}, David Ayer</h5>
+            <span class="minutes d-inline" style="margin-top:1px">
+        <img  :src="'https://image.tmdb.org/t/p/original'+movie.production_companies[0].logo_path" width="20%" alt="">
+        </span>
+      <p class="type">{{movie.production_companies[0].name}}</p>
     </div>
-    <div class="movie_desc">
-      <p class="text">
-        Set in a world where fantasy creatures live side by side with humans. A human cop is forced to work with an Orc to find a weapon everyone is prepared to kill for. 
+    <div class="movie_desc mt-5">
+      <p class="txt_post ">
+        {{movie.overview}} 
       </p>
     </div>
     <div class="movie_social">
       <ul>
-        <li><i class="material-icons">share</i></li>
-        <li><i class="material-icons"></i></li>
-        <li><i class="material-icons">chat_bubble</i></li>
+        
       </ul>
     </div>
   </div>
-  <div class="blur_back" :style="{ 'background-image': 'url(' + 'https://image.tmdb.org/t/p/w500'+movie.poster_path + ')' }" style="background-size: 50%;" ></div>
+  <div class="blur_back" :style="{ 'background-image': 'url(' + movie.poster_path + ')' }" style="background-size: 50%;" ></div>
 </div>
 </div>
 </div>
@@ -54,6 +53,10 @@ export default {
     }
   },
   methods:{
+    OnClick(movie){
+      console.log(movie.poster_path)
+        this.$router.push({name:'MovieDetail',params:{movie:movie,page:'Best'}})
+      },
     findMyBest(movie_id,num){
       const key = 'e37c0ae71977e8ad20b5a3f6caa339a1'
       console.log(this.profile)
@@ -62,6 +65,7 @@ export default {
       .then(res=>{
         console.log('findMyBest',res.data,num)
         this.best_movies[num] = res.data
+        this.best_movies[num].poster_path = 'https://image.tmdb.org/t/p/w500' + this.best_movies[num].poster_path
         console.log(num,this.best_movies[num])
       })
         axios.get(`https://api.themoviedb.org/3/movie/${movie_id}/videos?api_key=${key}&language=en-US`)
@@ -99,6 +103,7 @@ export default {
       .then(res=>{
         console.log(res,'ffffffffffffffffffffffffffffff')
         this.profile = res.data
+      
         this.genre = res.data.genre
         console.log(this.profile)
         console.log(this.genre)
@@ -116,9 +121,7 @@ export default {
 
       })
     },
-    edit(profile){
-      this.$router.push({name:'UpdateProfile',params:{profile}})
-    }
+
   },
   created(){
     const token = localStorage.getItem('jwt')
@@ -149,7 +152,17 @@ export default {
     font-size: 14px;
     font-weight: 400;
 } */
-
+ .txt_post {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 5; /* 라인수 */
+    -webkit-box-orient: vertical;
+    word-wrap:break-word; 
+    line-height: 1.2em;
+    height: 5.9em; /* line-height 가 1.2em 이고 3라인을 자르기 때문에 height는 1.2em * 3 = 3.6em */
+    text-align: left;
+  }
 
 #movie_card  .movie_card {
     position: relative;
@@ -174,7 +187,7 @@ export default {
     width: 100%;
     height: 100%;
     background-blend-mode: multiply;
-    z-index: 2;
+    z-index: 0;
     border-radius: 10px;
 }
 
@@ -213,7 +226,7 @@ export default {
     position: relative;
     float: left;
     margin-right: 20px;
-    height: 120px;
+    height: 150px;
     box-shadow: 0 0 20px -10px rgba(0, 0, 0, 0.5);
 }
 
@@ -258,7 +271,7 @@ export default {
 #movie_card .movie_card .blur_back {
     position: absolute;
     top: 0;
-    z-index: 1;
+    z-index: -1;
     height: 100%;
     right: 0;
     background-size: cover;
@@ -306,6 +319,7 @@ export default {
 }
 
 
+/* ------------------------------ */
 
 
 

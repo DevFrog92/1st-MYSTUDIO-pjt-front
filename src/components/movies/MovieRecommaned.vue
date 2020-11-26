@@ -14,12 +14,9 @@
       <span>RECOMMEND MOVIE</span>
     </div>
 
-    <!-- <div v-if="loading">
-      <h1>Searching...</h1>
-    </div> -->
-    <!-- <hr> -->
+
     <div v-if="loading" class='center'>
-      <p><scale-loader :loading="loading" :color="color" :size="size" id='loader'></scale-loader></p>
+      <p style="margin-top:100px"><scale-loader :loading="loading" :color="color" :size="size" id='loader'></scale-loader></p>
     </div>
     <div v-if="genre_name" >
       <h1 class="m-5">
@@ -99,54 +96,6 @@
             </b-card>
         </b-modal>
 
-        <!-- <b-modal tabindex="-1" id="modal-xl" size="xl" centered :title="temp.movie_title">
-            <b-card no-body class="overflow-hidden" style="max-width: 100%;">
-              <b-row no-gutters>
-                <b-col md="4">
-                  <b-card-img :src="'https://image.tmdb.org/t/p/w500'+temp.poster_path" alt="Image" class="rounded-0" id='cardimg'></b-card-img>
-                </b-col>
-                <b-col md="8">
-                  <div class="m-3 ">
-                    <div class="d-flex justify-content-between mb-3">
-                    <h2 class="m-0">{{temp.movie_title}} <span>{{temp.rank}}</span> </h2>
-                    <h5 class="m-0 pt-3" >Written by : {{temp.username}}</h5>
-                    </div>
-                    <b-card-text >
-                      <p>{{temp.content}}</p>
-                      <div class="d-flex justify-content-end">
-                      <p style="margin-right:0;">Reporting date : {{temp.created_at}}</p>
-                      </div>
-                    </b-card-text>
-                    <hr>
-                    <div class="d-flex justify-content-between"><b-form-input style="width:85%;height:50px;" @keypress.enter="createComment(temp)" v-model="comment"></b-form-input><b-button class="p-1" @click="createComment(temp)">Submit</b-button></div>
-                    <hr>
-                      <div v-if="updating">
-                    <ol>
-                      <li v-for="(comment,idx) in comment_list" :key='idx'>
-                          <div class="d-flex justify-content-between">
-                          <div>
-                          <p class="mx-3 d-inline">{{comment.content}}</p>
-                          </div>
-                          <div>
-                          <p class="mb-0 d-inline"><span class="d-block"> By : {{comment.username}} </span><span> created at : {{comment.created_at}}</span></p>
-                          <b-btn class="p-1" @click="commentUpdate(comment)">UPDATE</b-btn>
-                          <b-btn class="p-1" @click="commentDelete(comment)">DELETE</b-btn>
-                          </div>
-                          </div>
-                      </li>
-                    </ol>
-                      </div>
-                      <div v-else>
-                      <div class="d-flex justify-content-between"><b-form-input v-model='comment_update' style="width:85%;height:50px;" @keypress.enter="updateComment(comment)"></b-form-input><b-button class="p-1" @click="updateComment(comment)">Submit</b-button></div>  
-                      </div>
-                  </div>
-                </b-col>
-              <p><b-btn class="p-1" @click="likeReview(temp)">좋아요</b-btn> {{count}} 명이 이 글을 좋아합니다.</p>
-              </b-row>
-              <star-rating :config="config"></star-rating>
-            </b-card>
-
-          </b-modal> -->
       </div>
     </div>
 

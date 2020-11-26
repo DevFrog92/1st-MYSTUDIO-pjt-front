@@ -1,5 +1,5 @@
 <template>
-  <div class="favorite_cards">
+  <div class="favorite_cards " style="margin-top:100px;" >
      <div class="button-wrapper mt-5">
       </div>
       <Stack
@@ -14,98 +14,13 @@
                 style="transition: transform 300ms"
         >
           <div class="img">
-              <img class="img-1" @click="imageClick(image)" v-b-modal.modal-xl :src="image.poster_path" :alt="image.movie_title" />
-            <div class="content">
-              <b-btn  @click="btnClick(image)" v-b-modal.modal-lg>{{image.username}}</b-btn>
-            </div>
+              <img class="img-1" @click="OnClick(image)" v-b-modal.modal-xl :src="image.poster_path" :alt="image.movie_title" />
+     
               
           </div>
         </Stack-item>
       </Stack>
 
-
-      <div v-if="temp">
-        <b-modal tabindex="-1" id="modal-lg" size="lg" centered :title="temp.movie_title">
-            <b-card no-body class="overflow-hidden" style="max-width: 100%;">
-              <b-row no-gutters>
-                <b-embed
-                  type="iframe"
-                  aspect="16by9"
-                  :src="video_url"
-                  allowfullscreen>
-                  </b-embed>  
-              <p><b-btn class="p-1 m-4" @click="likeReview(temp)">좋아요</b-btn> {{count}} 명이 이 글을 좋아합니다.</p>
-              </b-row>
-              <hr>
-              <b-row>
-                <ul>
-                  <li v-for="(movie_review,idx) in movie_reviews" :key='idx'>
-                    <b-card :title="movie_review.auth" >
-                    <b-card-text>
-                      <p>{{movie_review.content}}</p>
-                    </b-card-text>
-                    <b-card-text>
-                      {{movie_review.author_details.rating}}
-                      <p>Reporting date : {{movie_review.created_at}}</p>
-                    </b-card-text>
-                    <a href="#" class="card-link">Card link</a>
-                    <b-link href="#" class="card-link">Another link</b-link>
-                  </b-card>
-                    </li>
-                </ul>
-              </b-row>
-            </b-card>
-        </b-modal>
-
-        <b-modal tabindex="-1" id="modal-xl" size="xl" centered :title="temp.movie_title">
-            <b-card no-body class="overflow-hidden" style="max-width: 100%;">
-              <b-row no-gutters>
-                <b-col md="4">
-                  <b-card-img :src="temp.poster_path" alt="Image" class="rounded-0" id='cardimg'></b-card-img>
-                </b-col>
-                <b-col md="8">
-                  <div class="m-3 ">
-                    <div class="d-flex justify-content-between mb-3">
-                    <h2 class="m-0">{{temp.movie_title}} <span>{{temp.rank}}</span> </h2>
-                    <h5 class="m-0 pt-3" >Written by : {{temp.username}}</h5>
-                    </div>
-                    <b-card-text >
-                      <p>{{temp.content}}</p>
-                      <div class="d-flex justify-content-end">
-                      <p style="margin-right:0;">Reporting date : {{temp.created_at}}</p>
-                      </div>
-                    </b-card-text>
-                    <hr>
-                    <div class="d-flex justify-content-between"><b-form-input style="width:85%;height:50px;" @keypress.enter="createComment(temp)" v-model="comment"></b-form-input><b-button class="p-1" @click="createComment(temp)">Submit</b-button></div>
-                    <hr>
-                      <div v-if="updating">
-                    <ol>
-                      <li v-for="(comment,idx) in comment_list" :key='idx'>
-                          <div class="d-flex justify-content-between">
-                          <div>
-                          <p class="mx-3 d-inline">{{comment.content}}</p>
-                          </div>
-                          <div>
-                          <p class="mb-0 d-inline"><span class="d-block"> By : {{comment.username}} </span><span> created at : {{comment.created_at}}</span></p>
-                          <b-btn class="p-1" @click="commentUpdate(comment)">UPDATE</b-btn>
-                          <b-btn class="p-1" @click="commentDelete(comment)">DELETE</b-btn>
-                          </div>
-                          </div>
-                      </li>
-                    </ol>
-                      </div>
-                      <div v-else>
-                      <div class="d-flex justify-content-between"><b-form-input v-model='comment_update' style="width:85%;height:50px;" @keypress.enter="updateComment(comment)"></b-form-input><b-button class="p-1" @click="updateComment(comment)">Submit</b-button></div>  
-                      </div>
-                  </div>
-                </b-col>
-              <p><b-btn class="p-1" @click="likeReview(temp)">좋아요</b-btn> {{count}} 명이 이 글을 좋아합니다.</p>
-              </b-row>
-              <star-rating :config="config"></star-rating>
-            </b-card>
-
-          </b-modal>
-      </div>
   </div>
 </template>
 
@@ -125,6 +40,16 @@ export default {
     }
     },
     methods:{
+      OnClick(movie){
+        console.log(movie)
+      const key = 'e37c0ae71977e8ad20b5a3f6caa339a1'
+      axios.get(`https://api.themoviedb.org/3/movie/${movie.movie_id}?api_key=${key}&language=ko-KR`)
+      .then(res=>{
+        const item = res.data
+        item.poster_path = 'https://image.tmdb.org/t/p/w500' + res.data.poster_path
+        this.$router.push({name:'MovieDetail',params:{movie:res.data,page:'Favorite'}})
+      })
+      },
       readAllFavorite(){
     const config = this.setToken()
     axios.get(`http://127.0.0.1:8000/movie/favorite_read_all/`,config)
@@ -143,24 +68,7 @@ export default {
       }
       return config
     },
-    favorite(movie){
-      console.log(movie)
-      const config = this.setToken()
-      const movieItem = new FormData()
-      movieItem.append('movie_title',movie.title)
-      movieItem.append('poster_path',movie.poster_path)
-      movieItem.append('movie_id',movie.id)
-      movieItem.append('overview',movie.overview)
-      movieItem.append('genre',movie.genre_ids)
-
-      axios.post(`http://127.0.0.1:8000/movie/${movie.id}/favorite_read_save/`,movieItem,config)
-      .then(res=>{
-        console.log(res.data)
-        this.readAllFavorite()
-      })
-
-    },
-
+   
     },
     created(){
   const token = localStorage.getItem('jwt')
@@ -177,6 +85,7 @@ export default {
 </script>
 
 <style scpoed>
+
 #favorite_cards .container { 
     width: 80vw; 
     margin: 0 auto; 

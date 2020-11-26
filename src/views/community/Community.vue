@@ -21,7 +21,7 @@
           <div class="img">
               <img @click="imageClick(image)" v-b-modal.modal-xl :src="image.poster_path" :alt="image.movie_title" />
             <div class="content">
-              <b-btn  @click="btnClick(image)" v-b-modal.modal-lg>{{image.username}}</b-btn>
+              <span  @click="btnClick(image)" class="btn_ML third" v-b-modal.modal-lg>Preview</span>
             </div>
             
               
@@ -32,7 +32,7 @@
 
       <div v-if="temp">
         <b-modal tabindex="-1" id="modal-lg" size="lg" centered :title="temp.movie_title" >
-            <b-card no-body class="overflow-hidden" style="max-width: 100%;">
+            <b-card no-body class="overflow-hidden bg-dark " style="max-width: 100%;color:white;" >
               
               <b-row no-gutters >
                 <b-embed
@@ -41,23 +41,31 @@
                   :src="video_url"
                   allowfullscreen>
                   </b-embed>  
-              <p><b-btn class="p-1 m-4" @click="likeReview(temp)">좋아요</b-btn> {{count}} 명이 이 글을 좋아합니다.</p>
+              <p @click="likeReview(temp)" style="color:#6A16CD; font-size:20px; margin-top:20px;cursor:pointer; margin-left:15px">
+                        <span v-if="liked" class="mr-1">
+                        <b-icon-heart-fill></b-icon-heart-fill> 
+
+                        </span>
+                        <span v-else class="mr-1" >
+                        <b-icon-heart></b-icon-heart> 
+
+                        </span>
+                        <span style="color:black; font-size:15px; font-weight:bold; color:white;"> {{count}} 명이 이 글을 좋아합니다.</span>
+                        </p>
               </b-row>
               <hr>
-              <b-row>
+              <b-row class='bg-dark'>
                 <ul>
-                  <li v-for="(movie_review,idx) in movie_reviews" :key='idx'>
+                  <li v-for="(movie_review,idx) in movie_reviews" :key='idx' style=" list-style-type : none">
                     <!-- 가져가지 마세요!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
-                    <h2 style="font-family: 'Noto Sans', sans-serif; font-size:10px;">{{movie.title}}</h2>
-                    <b-card-text>
-                      <p>{{movie_review.content}}</p>
+                    <b-card-text  >
+                      <p class="txt_post" style="width:97%;text-align:justify;">{{movie_review.content}}</p>
                     </b-card-text>
-                    <b-card-text>
-                      {{movie_review.author_details.rating}}
+                    <b-card-text >
+                      <span style="font-size:16px; ">STAR RANK : </span><span style="text-transform:none; ">{{movie_review.author_details.rating}} x <b-icon-star-fill style="color:yellow; font-size:25px; "></b-icon-star-fill> </span>
+                      
                       <p>Reporting date : {{movie_review.created_at}}</p>
                     </b-card-text>
-                    <a href="#" class="card-link">Card link</a>
-                    <b-link href="#" class="card-link">Another link</b-link>
               
                     </li>
                 </ul>
@@ -69,10 +77,10 @@
 
 
         <b-modal tabindex="-1" id="modal-xl" size="lg" centered :title="temp.movie_title">
-            <b-card no-body class="overflow-hidden" style="max-width: 100%;">
+            <b-card no-body class="overflow-hidden " style="max-width: 100%;">
               <div style=" font-family:'Noto Sans', sans-serif; text-transform: uppercase;">
               <b-row no-gutters>
-                    <div class="m-0 pt-4" style="height:70px; width:100%; text-align:center; font-size:22px; font-weight:bold; text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black; color:white;" >{{temp.username}}의  '{{temp.movie_title}}'  REVIEW</div>
+                    <div class="m-0 pt-4" style="height:70px; width:100%; text-align:center; font-size:22px; font-weight:bold; text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black; color:white; letter-spacing:1.5px;" >{{temp.username}}의  '{{temp.movie_title}}'  REVIEW</div>
                 <!-- <b-col md="4"> -->
                   <div class="d-flex ">
                     <div style="display:inline-block;">
@@ -85,42 +93,56 @@
                       <h6 style="font-size:16px; margin-top:25px;">REVIEW</h6>
                       <h6 style="text-indent:10px; font-size:19px; font-weight:bold;">{{temp.content}}</h6>
                       <br>
-                      <p  @click="likeReview(temp)" style="color:#6A16CD; font-size:20px; margin-top:20px;cursor:pointer;"><b-icon-heart-fill></b-icon-heart-fill> <span style="color:black; font-size:15px; font-weight:bold; "> {{count}} 명이 이 글을 좋아합니다.</span></p>
+                      <p @click="likeReview(temp)" style="color:#6A16CD; font-size:20px; margin-top:20px;cursor:pointer;">
+                        <span v-if="liked" class="mr-1">
+                        <b-icon-heart-fill></b-icon-heart-fill> 
+
+                        </span>
+                        <span v-else class="mr-1" >
+                        <b-icon-heart></b-icon-heart> 
+
+                        </span>
+                        <span style="color:black; font-size:15px; font-weight:bold; "> {{count}} 명이 이 글을 좋아합니다.</span>
+                        </p>
                       <h6 style="font-size:14px; margin-top:5px; ;">posting date : {{temp.created_at}}</h6>
                       
                     </div>
                 <!-- </b-col> -->
                   </div>
-                <b-col md="8">
-                  <div class="m-3 ">
+                
+                  <div>
                   
                     
-                    <div class="d-flex justify-content-between"><b-form-input style="width:85%;height:50px;" @keypress.enter="createComment(temp)" v-model="comment"></b-form-input><b-button class="p-1" @click="createComment(temp)">Submit</b-button></div>
+                      <div style=" margin-left: 55px; margin-top:10px;">
+                      <h6 style="font-size:15px; font-weight:bold; color:#6A16CD;"><b-icon-chat-right-dots></b-icon-chat-right-dots> comment</h6></div>
+                      <input v-model='comment' type="text" class="choose" style="width:550px;height:40px; margin-left:75px;"  @keypress.enter="createComment(temp)"><button class="p-1 btn6_side2"  @click="createComment(comment)">Submit</button>  
+                      
+                    
                     
                       <div v-if="updating">
-                    <ol>
+                        <div style="margin-left:50px; margin-top:9px">
+
+                    <ul style="list-style:none;">
                       <li v-for="(comment,idx) in comment_list" :key='idx'>
-                          <div class="d-flex justify-content-between">
+                         
                           <div>
-                          <p class="mx-3 d-inline">{{comment.content}}</p>
+                          <p class="mb-0 d-inline"> <b-icon-arrow-return-right style="color:#6A16CD; font-weight:bold; font-size:20px;"></b-icon-arrow-return-right><span style="font-size:13px; margin-left:7px;"> created at : {{comment.created_at}}</span></p>
+                          <button class="btn6_sele3" style="margin-left:5px;" @click="commentUpdate(comment)">EDIT</button>
+                          <button class="btn6_sele3" @click="commentDelete(comment)">DELETE</button>
                           </div>
-                          <div>
-                          <p class="mb-0 d-inline"><span class="d-block"> By : {{comment.username}} </span><span> created at : {{comment.created_at}}</span></p>
-                          <b-btn class="p-1" @click="commentUpdate(comment)">UPDATE</b-btn>
-                          <b-btn class="p-1" @click="commentDelete(comment)">DELETE</b-btn>
+                          <div class="d-block" style=" margin-left:10px;">
+                          <p class="mx-3 d-inline" style="color:#6A16CD"><span style="font-size:15px; font-weight:bold;">  {{comment.username}} : </span><span style="width:"> {{comment.content}}</span></p>
                           </div>
-                          </div>
+                          
                       </li>
-                    </ol>
+                    </ul>
+                        </div>
                       </div>
                       <div v-else>
-                           <!-- <div class="d-flex justify-content-end mr-1">
-          <button style="margin-top:20px;  margin-right:10px; display:block; " class="btn6_side" @click="findMovie(title)">FIND</button>
-        </div> -->
-                      <div class="d-flex justify-content-between"><b-form-input v-model='comment_update' style="width:85%;height:50px;" @keypress.enter="updateComment(comment)"></b-form-input><button class="p-1 btn6_side" @click="updateComment(comment)">Submit</button></div>  
+                      <input v-model='comment_update' type="text" class="choose" style="width:550px;height:40px; margin-left:75px;"  @keypress.enter="updateComment(comment)"><button class="p-1 btn6_side2"  @click="updateComment(comment)">Submit</button>                        
                       </div>
                   </div>
-                </b-col>
+                
               </b-row>
               </div>
 
@@ -209,7 +231,7 @@ export default {
     },
     commentDelete(comment){
       const config = this.setToken()
-      axios.delete(`http://127.0.0.1:8000/community/${comment.id}/delete_comment/`,config)
+      axios.delete(`http://127.0.0.1:8000/community/review/${comment.id}/delete_update_comment/`,config)
       .then(res=>{
         console.log(res.data)
         this.readComment(this.temp)
@@ -253,6 +275,7 @@ export default {
       axios.get(`http://127.0.0.1:8000/community/${temp.id}/like/`,config)
       .then(res=>{
         this.count = res.data.count
+        console.log(res.data)
         this.liked = res.data.liked
       })
     },
@@ -349,6 +372,15 @@ export default {
 </script>
 
 <style scoped>
+.choose {
+    border:1px solid grey;
+    margin-right:3px;
+    border-radius:2px;
+}
+.choose:focus {
+  outline:1px solid #b382ec;
+    border-radius:2px;
+}
 .container { 
     width: 80vw; 
     margin: 0 auto; 
@@ -476,4 +508,97 @@ background-size: cover;
 .cta:active {
     transform: scale(0.96);
 }
+
+
+.btn6_side2, .btn6_side2:link, .btn6_side2:visited {
+    padding: 0px 0;
+    width:75px;
+    height:40px;
+    margin-left:2px;
+    font-family: 'Noto Sans', sans-serif;
+  
+    background:transparent;
+  
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 13px;
+    letter-spacing: 1px;
+    transition: all .2s ease-in-out;
+     border: 3px solid #6A16CD;
+    border-image: linear-gradient(to right, #6A16CD, #5411A4, #be29ec, #c616cd);
+    border-image-slice: 1;
+    color: #6A16CD;
+}
+
+.btn6_side2:hover, .btn6_side2:link:hover, .btn6_side2:visited:hover {
+    border: 3px solid #6A16CD;
+    border-image: linear-gradient(to right, #6A16CD, #5411A4, #be29ec, #c616cd);
+    border-image-slice: 1;
+    color: #6A16CD;
+     color: grey;
+       border: 3px solid grey;
+}
+
+
+
+.btn6_sele3, .btn6_sele3:link, .btn6_sele3:visited {
+    padding: 10px 0;
+    width:50px;
+    height:20px;
+    font-family: 'Noto Sans', sans-serif;
+    border: transparent;
+    background:transparent;
+    color: grey;
+    font-weight:bold;
+    text-transform: uppercase;
+    font-size: 12px;
+    letter-spacing: 0.5px;
+    transition: all .2s ease-in-out;
+}
+
+.btn6_sele3:hover, .btn6_sele3:link:hover, .btn6_sele3:visited:hover {
+    color: #6A16CD;
+    font-weight: bold;
+}
+
+
+
+.btn_ML {
+    box-sizing: border-box;
+    width:70%;
+    appearance: none;
+    background-color: transparent;
+    border: 1px solid #fff;
+    border-radius: 0.6em;
+    cursor: pointer;
+    display: inline-block;
+    align-self: center;
+    font-size: 0.9rem;
+    font-weight: 400;
+    line-height: 1;
+    margin: 20px;
+    padding: 20px 10px;
+    text-decoration: none;
+    text-align: center;
+    text-transform: uppercase;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+}
+
+.btn_ML:hover, .btn_ML:focus {
+    color: #fff;
+    outline: 0;
+}
+
+
+.txt_post {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 3; /* 라인수 */
+    -webkit-box-orient: vertical;
+    word-wrap:break-word; 
+    line-height: 1.2em;
+    height: 3.6em; /* line-height 가 1.2em 이고 3라인을 자르기 때문에 height는 1.2em * 3 = 3.6em */
+  }
 </style>

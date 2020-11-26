@@ -235,7 +235,7 @@ export default {
       this.video_url = 'https://www.youtube.com/embed/'
       const key = 'e37c0ae71977e8ad20b5a3f6caa339a1'
       const movie_id = this.movie.id
-      console.log(movie_id)
+      console.log(movie_id,this.movie.poster_path)
       axios.get(`https://api.themoviedb.org/3/movie/${movie_id}/videos?api_key=${key}&language=en-US`)
       .then(res=>{
         console.log(res.data.results[0].key)
@@ -247,10 +247,16 @@ export default {
     Back(){
       if(this.page === 'List'){
         this.$router.push({name:'MovieList'})
-      }else{
+      }else if (this.page === ' Recommand'){
         this.$router.push({name:'MovieRecommaned'})
       }
-
+      else if(this.page === 'Favorite'){
+        console.log('favorite로 돌아간다')
+        this.$router.push({name:'Profile',params:{fav_state:true}})
+      }
+      else{
+        this.$router.push({name:'Profile',params:{fav_state:false}})
+      }
     }
   },
   created(){
